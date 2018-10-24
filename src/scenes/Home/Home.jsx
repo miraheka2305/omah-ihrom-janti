@@ -35,11 +35,7 @@ const BannerWrapper = styled.div`
   background-image: url(${bannerImg});
   background-repeat: no-repeat;
   background-size: cover;
-  padding-top: 70px;
-`;
-
-const NavBarWrapper = styled.div`
-  margin: 0 auto;
+  padding-top: 50px;
 `;
 
 const TitleWrapper = styled.div`
