@@ -6,16 +6,16 @@ export default class NavBar extends Component {
     return (
       <NavBarWrapper>
         <LinkWrapper>
-          <Link href="#">Home</Link>
+          <Link href="#">HOME</Link>
         </LinkWrapper>
         <LinkWrapper>
-          <Link href="#">About</Link>
+          <Link href="#">ABOUT</Link>
         </LinkWrapper>
         <LinkWrapper>
-          <Link href="#">Products</Link>
+          <Link href="#">PRODUCTS</Link>
         </LinkWrapper>
         <LinkWrapper>
-          <Link href="#">Contact Me</Link>
+          <Link href="#">CONTACT ME</Link>
         </LinkWrapper>
       </NavBarWrapper>
     );
@@ -23,16 +23,16 @@ export default class NavBar extends Component {
 }
 
 const NavBarWrapper = styled.div`
-  width: 290px;
+  width: 400px;
   margin: 10px auto;
 `;
 
 const LinkWrapper = styled.div`
   display: inline-block;
-  padding: 10px;
+  padding: 20px 15px 15px 15px;
   &:hover {
     border-top: 3px solid #939393;
-    padding-top: 7px;
+    padding-top: 17px;
   }
 `;
 
