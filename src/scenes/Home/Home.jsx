@@ -3,6 +3,7 @@ import styled from "styled-components";
 import bannerImg from "../../assets/banner-image.jpg";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
+import ProductItem from "../../components/ProductItem/ProductItem";
 
 export default class Home extends Component {
   render() {
@@ -16,6 +17,14 @@ export default class Home extends Component {
             <SubTitle>Feel confort with the softness of our products</SubTitle>
           </TitleWrapper>
         </BannerWrapper>
+        <ProductPreviewWrapper>
+          <ProductPreviewTitle>Hot Item</ProductPreviewTitle>
+          <ProductWrapper>
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+          </ProductWrapper>
+        </ProductPreviewWrapper>
         <FooterWrapper>
           <Footer />
         </FooterWrapper>
@@ -58,6 +67,23 @@ const SubTitle = styled.span`
   font-size: 20px;
   font-weight: 500;
   line-height: 2em;
+`;
+
+const ProductPreviewWrapper = styled.div`
+  height: 400px;
+  text-align: center;
+  padding: 60px 0;
+`;
+
+const ProductWrapper = styled.div`
+  width: 1060px;
+  margin: 50px auto;
+`;
+
+const ProductPreviewTitle = styled.span`
+  font-size: 30px;
+  font-weight: 500;
+  color: #545454;
 `;
 
 const FooterWrapper = styled.div`
