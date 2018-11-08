@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import bannerImg from "../../assets/banner-image.jpg";
-import NavBar from "../../components/NavBar/NavBar";
-import Footer from "../../components/Footer/Footer";
 import ProductItem from "../../components/ProductItem/ProductItem";
-
+import { NavLink } from "react-router-dom";
 export default class Home extends Component {
   render() {
     return (
       <HomeWrapper>
         <BannerWrapper>
-          <NavBar />
           <TitleWrapper>
             <Title>OMAH IHROM JANTI</Title>
             <br />
@@ -24,10 +21,8 @@ export default class Home extends Component {
             <ProductItem />
             <ProductItem />
           </ProductWrapper>
+          <MoreButton to="/products">More Products</MoreButton>
         </ProductPreviewWrapper>
-        <FooterWrapper>
-          <Footer />
-        </FooterWrapper>
       </HomeWrapper>
     );
   }
@@ -39,12 +34,12 @@ const HomeWrapper = styled.div`
 `;
 
 const BannerWrapper = styled.div`
-  height: 1080px;
+  height: 800px;
   width: 100%;
   background-image: url(${bannerImg});
   background-repeat: no-repeat;
   background-size: cover;
-  padding-top: 50px;
+  padding-top: 40px;
 `;
 
 const TitleWrapper = styled.div`
@@ -70,14 +65,14 @@ const SubTitle = styled.span`
 `;
 
 const ProductPreviewWrapper = styled.div`
-  height: 400px;
+  height: 480px;
   text-align: center;
   padding: 60px 0;
 `;
 
 const ProductWrapper = styled.div`
   width: 1060px;
-  margin: 50px auto;
+  margin: 30px auto;
 `;
 
 const ProductPreviewTitle = styled.span`
@@ -86,7 +81,13 @@ const ProductPreviewTitle = styled.span`
   color: #545454;
 `;
 
-const FooterWrapper = styled.div`
-  width: 100%;
-  height: 225px;
+const MoreButton = styled(NavLink)`
+  width: 100px;
+  height: 40px;
+  background: #696969;
+  padding: 10px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px;
 `;
