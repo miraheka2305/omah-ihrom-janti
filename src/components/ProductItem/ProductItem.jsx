@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Towel from "../../assets/towel_example.jpeg";
 import ProductDetails from "./ProductDetails";
 
 export default class ProductItem extends Component {

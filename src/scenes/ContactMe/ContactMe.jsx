@@ -5,13 +5,8 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker,
-  InfoWindow,
-  Direction
+  Marker
 } from "react-google-maps";
-import NavBar from "../../components/NavBar/NavBar";
-import Footer from "../../components/Footer/Footer";
-
 const MapComponent = compose(
   withProps({
     googleMapURL:
@@ -56,22 +51,14 @@ export default class ContactMe extends Component {
   };
 
   render() {
-    const style = {
-      width: "100%",
-      height: "400px"
-    };
     return (
       <ContactWrapper>
         <BodyWrapper>
-          <NavBar />
           <MapComponent
             isMarkerShown={this.state.isMarkerShown}
             onMarkerClick={this.handleMarkerClick}
           />
         </BodyWrapper>
-        <FooterWrapper>
-          <Footer />
-        </FooterWrapper>
       </ContactWrapper>
     );
   }
@@ -84,11 +71,5 @@ const ContactWrapper = styled.div`
 
 const BodyWrapper = styled.div`
   width: 100%;
-  height: 1100px;
-  padding-top: 50px;
-`;
-
-const FooterWrapper = styled.div`
-  width: 100%;
-  height: 225px;
+  height: 500px;
 `;

@@ -1,13 +1,26 @@
 import React, { Component } from "react";
-import Home from "./scenes/Home/Home";
-// import About from "./scenes/About/About";
-import Products from "./scenes/Products/Products";
-// import ContactMe from "./scenes/ContactMe/ContactMe";
+import styled from "styled-components";
+import NavBar from "./components/NavBar/NavBar";
+import UserMain from "./scenes/UserMain/UserMain";
+import Footer from "./components/Footer/Footer";
 
 class App extends Component {
   render() {
-    return <Products />;
+    return (
+      <div>
+        <NavBar />
+        <UserMain />
+        <FooterWrapper>
+          <Footer />
+        </FooterWrapper>
+      </div>
+    );
   }
 }
 
 export default App;
+
+const FooterWrapper = styled.div`
+  width: 100%;
+  height: 225px;
+`;

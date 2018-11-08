@@ -83,6 +83,7 @@ const DescWrapper = styled.div`
   padding: 30px 20px 20px 10px;
   width: 350px;
   height: 100%;
+  text-align: left;
 `;
 
 const NameText = styled.h1``;

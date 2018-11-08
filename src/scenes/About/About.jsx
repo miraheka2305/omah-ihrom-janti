@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import NavBar from "../../components/NavBar/NavBar";
-import Footer from "../../components/Footer/Footer";
 import Image from "../../assets/about-banner.jpg";
 
 export default class About extends Component {
@@ -9,7 +7,6 @@ export default class About extends Component {
     return (
       <AboutWrapper>
         <BodyWrapper>
-          <NavBar />
           <AboutImage src={Image} />
           <TextWrapper>
             <Title>Omah Ihrom Janti</Title>
@@ -29,9 +26,6 @@ export default class About extends Component {
             </Text>
           </TextWrapper>
         </BodyWrapper>
-        <FooterWrapper>
-          <Footer />
-        </FooterWrapper>
       </AboutWrapper>
     );
   }
@@ -43,10 +37,9 @@ const AboutWrapper = styled.div`
 `;
 
 const BodyWrapper = styled.div`
-  height: 1100px;
+  height: 1000px;
   width: 100%;
   padding: 0 20px;
-  padding-top: 50px;
 `;
 
 const AboutImage = styled.img`
@@ -71,9 +64,4 @@ const Title = styled.p`
 const Text = styled.p`
   font-size: 17px;
   text-align: center;
-`;
-
-const FooterWrapper = styled.div`
-  width: 100%;
-  height: 225px;
 `;
