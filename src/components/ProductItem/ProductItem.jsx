@@ -21,27 +21,20 @@ export default class ProductItem extends Component {
   }
 
   render() {
-    const dummyData = {
-      image:
-        "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg",
-      name: "Handuk Sutra Halus",
-      price: "Rp.100.000,00",
-      desc:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    };
+    const { item } = this.props;
     return (
       <Item>
         <ItemWrapper onClick={this.openModal}>
           <ItemHover>View details</ItemHover>
-          <ItemImg src={dummyData.image} />
+          <ItemImg src={item.image} />
           <ItemDesc>
-            <ItemName>{dummyData.name}</ItemName>
+            <ItemName>{item.name}</ItemName>
             <br />
-            <ItemPrice>{dummyData.price}</ItemPrice>
+            <ItemPrice>{item.price}</ItemPrice>
           </ItemDesc>
         </ItemWrapper>
         <ProductDetails
-          data={dummyData}
+          data={item}
           open={this.state.open}
           onClose={this.closeModal}
         />

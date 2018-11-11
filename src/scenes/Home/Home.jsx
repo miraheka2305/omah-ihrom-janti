@@ -5,6 +5,35 @@ import ProductItem from "../../components/ProductItem/ProductItem";
 import { NavLink } from "react-router-dom";
 export default class Home extends Component {
   render() {
+    const productItemPreview = [
+      {
+        id: 1,
+        name: "Handuk Sutra Halus",
+        price: "Rp.100.000,00",
+        desc:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        image:
+          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
+      },
+      {
+        id: 2,
+        name: "Kain Rayon",
+        price: "Rp.50.000,00",
+        desc:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        image:
+          "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
+      },
+      {
+        id: 3,
+        name: "Kain Wol",
+        price: "Rp.80.000,00",
+        desc:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        image:
+          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
+      }
+    ];
     return (
       <HomeWrapper>
         <BannerWrapper>
@@ -17,9 +46,9 @@ export default class Home extends Component {
         <ProductPreviewWrapper>
           <ProductPreviewTitle>Hot Item</ProductPreviewTitle>
           <ProductWrapper>
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
+            {productItemPreview.map(item => {
+              return <ProductItem key={item.id} item={item} />;
+            })}
           </ProductWrapper>
           <MoreButton to="/products">More Products</MoreButton>
         </ProductPreviewWrapper>
