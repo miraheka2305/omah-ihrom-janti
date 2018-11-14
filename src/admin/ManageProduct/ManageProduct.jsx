@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Popup from "reactjs-popup";
 
 export default class ManageProduct extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: "" };
+    this.state = { file: "", open: true };
   }
 
   handleSubmit(e) {
@@ -25,39 +26,42 @@ export default class ManageProduct extends Component {
   }
   render() {
     return (
-      <Wrapper>
-        <Title>Manage Your Product</Title>
-        <form onSubmit={e => this.handleSubmit(e)}>
-          <FormWrapper>
-            <Label>Product Name</Label>
-            <Input type="text" placeholder="Write your product name" />
-          </FormWrapper>
-          <FormWrapper>
-            <Label>Product Price</Label>
-            <Input type="number" placeholder="Write your product price" />
-          </FormWrapper>
-          <FormWrapper>
-            <Label>Product Description</Label>
-            <InputDesc type="text" placeholder="Write your product name" />
-          </FormWrapper>
-          <FormWrapper>
-            <Input type="file" onChange={e => this.handleImageChange(e)} />
-          </FormWrapper>
-          <Button type="submit" onClick={e => this.handleSubmit(e)}>
-            Submit
-          </Button>
-        </form>
-      </Wrapper>
+      <Popup open={this.state.open}>
+        <Wrapper>
+          <Title>Manage Your Product</Title>
+          <form onSubmit={e => this.handleSubmit(e)}>
+            <FormWrapper>
+              <Label>Product Name</Label>
+              <Input type="text" placeholder="Write your product name" />
+            </FormWrapper>
+            <FormWrapper>
+              <Label>Product Price</Label>
+              <Input type="number" placeholder="Write your product price" />
+            </FormWrapper>
+            <FormWrapper>
+              <Label>Product Description</Label>
+              <InputDesc type="text" placeholder="Write your product name" />
+            </FormWrapper>
+            <FormWrapper>
+              <Label>Product Photo</Label>
+              <Input type="file" onChange={e => this.handleImageChange(e)} />
+            </FormWrapper>
+            <ButtonWrapper>
+              <Button type="submit" onClick={e => this.handleSubmit(e)}>
+                Submit
+              </Button>
+              <ButtonCancel>Cancel</ButtonCancel>
+            </ButtonWrapper>
+          </form>
+        </Wrapper>
+      </Popup>
     );
   }
 }
 
 const Wrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
-  padding: 30px 40px;
+  padding: 20px 30px;
 `;
-
 const Title = styled.h1`
   font-size: 30px;
   text-align: center;
@@ -79,9 +83,11 @@ const Input = styled.input`
   width: 300px;
   padding: 5px;
   border-radius: 5px;
+  border: 1px solid #d6d6d6;
 `;
 
 const InputDesc = styled.textarea`
+  border: 1px solid #d6d6d6;
   font-size: 15px;
   width: 300px;
   height: 70px;
@@ -90,10 +96,21 @@ const InputDesc = styled.textarea`
   padding: 5px;
 `;
 
+const ButtonWrapper = styled.div`
+  width: 280px;
+  margin: 0 auto;
+`;
 const Button = styled.button`
-  font-size: 18px;
+  font-size: 16px;
   width: 100px;
-  height: 50px;
-  padding: 10px;
+  height: 40px;
+  padding: 5px;
   border-radius: 5px;
+  margin: 20px;
+  cursor: pointer;
+`;
+
+const ButtonCancel = styled(Button)`
+  background: #a8a8a8;
+  color: white;
 `;
