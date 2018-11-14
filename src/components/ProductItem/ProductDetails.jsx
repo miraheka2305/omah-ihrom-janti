@@ -11,8 +11,8 @@ export default class ProductDetails extends Component {
 
   handleMouseMove = e => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
-    const x = ((e.pageX - left) / width) * 100;
-    const y = ((e.pageY - top) / height) * 100;
+    const x = ((e.pageX - (left + window.scrollX)) / width) * 100;
+    const y = ((e.pageY - (top + window.scrollY)) / height) * 100;
     this.setState({ backgroundPosition: `${x}% ${y}%` });
   };
   render() {
