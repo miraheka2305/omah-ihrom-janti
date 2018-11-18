@@ -63,60 +63,81 @@ const HomeWrapper = styled.div`
 `;
 
 const BannerWrapper = styled.div`
-  height: 800px;
+  height: 500px;
   width: 100%;
   background-image: url(${bannerImg});
   background-repeat: no-repeat;
   background-size: cover;
   padding-top: 40px;
+  @media only screen and (min-width: 768px) {
+    height: 800px;
+  }
 `;
 
 const TitleWrapper = styled.div`
-  height: 80px;
-  width: 400px;
+  width: 200px;
   padding: 20px 10px;
   margin: 0 auto;
   border-top: 2px solid #3f3f3f;
   border-bottom: 2px solid #3f3f3f;
   text-align: center;
   color: #3f3f3f;
+  @media only screen and (min-width: 768px) {
+    height: 80px;
+    width: 400px;
+  }
 `;
 
 const Title = styled.span`
-  font-size: 30px;
+  font-size: 16px
   font-weight: 550;
+  @media only screen and (min-width: 768px) {
+    font-size: 30px;
+  }
 `;
 
 const SubTitle = styled.span`
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 2em;
+  @media only screen and (min-width: 768px) {
+    line-height: 2em;
+    font-size: 20px;
+  }
 `;
 
 const ProductPreviewWrapper = styled.div`
-  height: 480px;
   text-align: center;
   padding: 60px 0;
 `;
 
 const ProductWrapper = styled.div`
-  width: 1060px;
   margin: 30px auto;
+  @media only screen and (min-width: 1024px) {
+    width: 1060px;
+  }
 `;
 
 const ProductPreviewTitle = styled.span`
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 500;
   color: #545454;
+  @media only screen and (min-width: 768px) {
+    font-size: 30px;
+  }
 `;
 
 const MoreButton = styled(NavLink)`
-  width: 100px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
+  font-size: 16px;
   background: #696969;
   padding: 10px;
   text-decoration: none;
-  font-size: 20px;
   color: white;
   border-radius: 5px;
+  @media only screen and (min-width: 768px) {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+  }
 `;
