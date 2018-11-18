@@ -71,5 +71,4 @@ const ContactWrapper = styled.div`
 
 const BodyWrapper = styled.div`
   width: 100%;
-  height: 500px;
 `;
