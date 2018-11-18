@@ -27,22 +27,27 @@ export default class Footer extends Component {
 const FooterWrapper = styled.div`
   padding: 25px;
   border-top: 1px solid #939393;
-  border-bottom: 1px solid #939393;
   color: #939393;
   text-align: center;
 `;
 
 const Title = styled.h1`
-  font-size: 20px;
+  font-size: 16px;
+  @media only screen and (min-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const Description = styled.div`
-  width: 440px;
-  height: 60px;
   border: 3px solid #939393;
   margin: 20px auto;
   padding: 15px 20px;
-  font-size: 16px;
+  font-size: 14px;
+  @media only screen and (min-width: 768px) {
+    font-size: 16px;
+    width: 440px;
+    height: 60px;
+  }
 `;
 
 const SubDescription = styled.div`

@@ -20,6 +20,7 @@ class App extends Component {
 export default App;
 
 const FooterWrapper = styled.div`
+  position: relative;
+  bottom: 0;
   width: 100%;
-  height: 225px;
 `;
