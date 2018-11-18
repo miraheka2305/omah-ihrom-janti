@@ -101,6 +101,7 @@ export default class Products extends Component {
 }
 
 const ProductsWrapper = styled.div`
-  background: white;
-  margin: 10px auto 30px auto;
+  @media only screen and (min-width: 768px) {
+    margin: 10px 30px 30px 30px;
+  }
 `;

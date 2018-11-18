@@ -25,10 +25,13 @@ export default class Footer extends Component {
 }
 
 const FooterWrapper = styled.div`
-  padding: 25px;
+  padding: 10px 0;
   border-top: 1px solid #939393;
   color: #939393;
   text-align: center;
+  @media only screen and (min-width: 768px) {
+    padding: 25px;
+  }
 `;
 
 const Title = styled.h1`
@@ -43,6 +46,7 @@ const Description = styled.div`
   margin: 20px auto;
   padding: 15px 20px;
   font-size: 14px;
+  width: 250px;
   @media only screen and (min-width: 768px) {
     font-size: 16px;
     width: 440px;
