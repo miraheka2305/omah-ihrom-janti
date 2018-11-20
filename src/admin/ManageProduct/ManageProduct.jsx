@@ -7,25 +7,65 @@ import AddProduct from "../AddProduct/AddProduct";
 export default class ManageProduct extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
-    this.openModal = this.openModal.bind(this);
+    this.state = {
+      open: false,
+      data: [
+        {
+          id: 1,
+          no: "1",
+          name: "Handuk Sutra",
+          price: "100000",
+          desc:
+            " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolorin reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          image:
+            "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
+        },
+        {
+          id: 2,
+          no: "2",
+          name: "Kain Rayon",
+          price: "50000",
+          desc:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          image:
+            "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
+        },
+        {
+          id: 3,
+          no: "3",
+          name: "Kain Wol",
+          price: "80000",
+          desc:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          image:
+            "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
+        }
+      ],
+      item: {}
+    };
+    this.openAddModal = this.openAddModal.bind(this);
+    this.openEditModal = this.openEditModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({ open: true });
+  openAddModal() {
+    this.setState({ open: true, item: {} });
   }
 
   closeModal() {
     this.setState({ open: false });
   }
 
+  openEditModal(product) {
+    this.setState({ open: true, item: product });
+  }
+
   render() {
+    console.log(this.state.data);
     return (
       <Wrapper>
         <Title>Manage Product</Title>
-        <AddButton onClick={this.openModal}>Add New Product</AddButton>
-        <AddProduct open={this.state.open} onClose={this.closeModal} />
+        <AddButton onClick={this.openAddModal}>Add New Product</AddButton>
         <Table>
           <thead>
             <tr>
@@ -38,30 +78,39 @@ export default class ManageProduct extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <BodyCell>1</BodyCell>
-              <BodyCell>Handuk Sutra</BodyCell>
-              <BodyCell>Rp.100.000</BodyCell>
-              <DescColumn>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </DescColumn>
-              <BodyCell>
-                <ProductImg src="https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg" />
-              </BodyCell>
-              <BodyCell>
-                <IconImg onClick={this.openModal} src={EditIcon} />
-                <AddProduct open={this.state.open} onClose={this.closeModal} />
-                <IconImg src={DeleteIcon} />
-              </BodyCell>
-            </tr>
+            {this.state.data.map(product => {
+              return (
+                <tr key={product.id}>
+                  <BodyCell>{product.no}</BodyCell>
+                  <BodyCell>{product.name}</BodyCell>
+                  <BodyCell>{product.price}</BodyCell>
+                  <DescColumn>{product.desc}</DescColumn>
+                  <BodyCell>
+                    <ProductImg src={product.image} />
+                  </BodyCell>
+                  <BodyCell>
+                    <IconImg
+                      onClick={() => {
+                        this.openEditModal(product);
+                      }}
+                      src={EditIcon}
+                    />
+                    <IconImg src={DeleteIcon} />
+                  </BodyCell>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
+        {this.state.open ? (
+          <AddProduct
+            open={this.state.open}
+            item={this.state.item}
+            onClose={this.closeModal}
+          />
+        ) : (
+          ""
+        )}
       </Wrapper>
     );
   }
