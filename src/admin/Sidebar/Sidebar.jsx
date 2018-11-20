@@ -42,7 +42,7 @@ const BarWrapper = styled.div`
 `;
 
 const SignOutWrapper = styled(BarWrapper)`
-  position: absolute
+  position: absolute;
   bottom: 0;
   width: 270px;
   border-bottom: none;
