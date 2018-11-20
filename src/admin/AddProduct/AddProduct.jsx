@@ -39,7 +39,6 @@ export default class AddProduct extends Component {
 
     reader.onloadend = () => {
       item.image = reader.result;
-      console.log("item.image: ", item.image);
       this.setState({ file: file, item: item });
     };
     reader.readAsDataURL(file);
