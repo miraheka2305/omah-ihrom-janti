@@ -5,7 +5,25 @@ import Popup from "reactjs-popup";
 export default class AddProduct extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: "", open: true };
+    this.state = {
+      file: "",
+      open: true,
+      item: {}
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  componentDidMount() {
+    this.setState({
+      item: this.props.item
+    });
+  }
+
+  handleChange(e) {
+    let item = Object.assign({}, this.state.item);
+    item[e.target.name] = e.target.value;
+    this.setState({
+      item: item
+    });
   }
 
   handleSubmit(e) {
@@ -15,16 +33,19 @@ export default class AddProduct extends Component {
 
   handleImageChange(e) {
     e.preventDefault();
+    let item = Object.assign({}, this.state.item);
     let reader = new FileReader();
     let file = e.target.files[0];
 
     reader.onloadend = () => {
-      this.setState({ file: file });
+      item.image = reader.result;
+      console.log("item.image: ", item.image);
+      this.setState({ file: file, item: item });
     };
-
     reader.readAsDataURL(file);
   }
   render() {
+    const { item } = this.state;
     return (
       <Popup
         open={this.props.open}
@@ -36,15 +57,33 @@ export default class AddProduct extends Component {
           <form onSubmit={e => this.handleSubmit(e)}>
             <FormWrapper>
               <Label>Product Name</Label>
-              <Input type="text" placeholder="Write your product name" />
+              <Input
+                type="text"
+                name="name"
+                placeholder="Write your product name"
+                value={item.name}
+                onChange={e => this.handleChange(e)}
+              />
             </FormWrapper>
             <FormWrapper>
               <Label>Product Price</Label>
-              <Input type="number" placeholder="Write your product price" />
+              <Input
+                type="text"
+                name="price"
+                placeholder="Write your product price"
+                value={item.price}
+                onChange={e => this.handleChange(e)}
+              />
             </FormWrapper>
             <FormWrapper>
               <Label>Product Description</Label>
-              <InputDesc type="text" placeholder="Write your product name" />
+              <InputDesc
+                type="text"
+                name="desc"
+                placeholder="Write your product name"
+                value={item.desc}
+                onChange={e => this.handleChange(e)}
+              />
             </FormWrapper>
             <FormWrapper>
               <Label>Product Photo</Label>
