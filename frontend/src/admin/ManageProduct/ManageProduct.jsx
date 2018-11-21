@@ -61,7 +61,6 @@ export default class ManageProduct extends Component {
   }
 
   render() {
-    console.log(this.state.data);
     return (
       <Wrapper>
         <Title>Manage Product</Title>
