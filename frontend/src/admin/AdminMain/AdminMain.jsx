@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Sidebar from "../Sidebar/Sidebar";
-import ManageProduct from "../ManageProduct/ManageProduct";
+import ManageProfile from "../ManageProfile/ManageProfile";
+// import ManageProduct from "../ManageProduct/ManageProduct";
 export default class AdminMain extends Component {
   render() {
     return (
@@ -10,7 +11,7 @@ export default class AdminMain extends Component {
           <Sidebar />
         </SidebarWrapper>
         <ComponentWrapper>
-          <ManageProduct />
+          <ManageProfile />
         </ComponentWrapper>
       </Wrapper>
     );

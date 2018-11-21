@@ -10,7 +10,11 @@ export default class AddProduct extends Component {
       open: true,
       item: {}
     };
+    this.baseState = this.state;
     this.handleChange = this.handleChange.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
   componentDidMount() {
     this.setState({
@@ -26,11 +30,6 @@ export default class AddProduct extends Component {
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    console.log("handle uploading", this.state.file);
-  }
-
   handleImageChange(e) {
     e.preventDefault();
     let item = Object.assign({}, this.state.item);
@@ -43,6 +42,17 @@ export default class AddProduct extends Component {
     };
     reader.readAsDataURL(file);
   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log("handle uploading", this.state.file);
+  }
+
+  handleCancel() {
+    this.setState(this.baseState);
+    this.props.onClose();
+  }
+
   render() {
     const { item } = this.state;
     return (
@@ -92,7 +102,7 @@ export default class AddProduct extends Component {
               <Button type="submit" onClick={e => this.handleSubmit(e)}>
                 Submit
               </Button>
-              <ButtonCancel onClick={this.props.onClose}>Cancel</ButtonCancel>
+              <ButtonCancel onClick={this.handleCancel}>Cancel</ButtonCancel>
             </ButtonWrapper>
           </form>
         </Wrapper>
