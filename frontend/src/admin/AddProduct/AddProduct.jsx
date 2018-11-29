@@ -45,7 +45,7 @@ export default class AddProduct extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log("handle uploading", this.state.file);
+    this.props.onSubmit(this.state.item);
   }
 
   handleCancel() {
@@ -72,6 +72,7 @@ export default class AddProduct extends Component {
                 placeholder="Write your product name"
                 value={item.name}
                 onChange={e => this.handleChange(e)}
+                required={true}
               />
             </FormWrapper>
             <FormWrapper>
@@ -82,6 +83,7 @@ export default class AddProduct extends Component {
                 placeholder="Write your product price"
                 value={item.price}
                 onChange={e => this.handleChange(e)}
+                required={true}
               />
             </FormWrapper>
             <FormWrapper>
@@ -92,11 +94,16 @@ export default class AddProduct extends Component {
                 placeholder="Write your product name"
                 value={item.desc}
                 onChange={e => this.handleChange(e)}
+                required={true}
               />
             </FormWrapper>
             <FormWrapper>
               <Label>Product Photo</Label>
-              <Input type="file" onChange={e => this.handleImageChange(e)} />
+              <Input
+                type="file"
+                onChange={e => this.handleImageChange(e)}
+                required={true}
+              />
             </FormWrapper>
             <ButtonWrapper>
               <Button type="submit" onClick={e => this.handleSubmit(e)}>
