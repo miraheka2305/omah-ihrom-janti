@@ -9,10 +9,9 @@ export default class ManageProduct extends Component {
     super(props);
     this.state = {
       open: false,
-      data: [
+      products: [
         {
-          id: 1,
-          no: "1",
+          id: 0,
           name: "Handuk Sutra",
           price: "100000",
           desc:
@@ -21,8 +20,7 @@ export default class ManageProduct extends Component {
             "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
         },
         {
-          id: 2,
-          no: "2",
+          id: 1,
           name: "Kain Rayon",
           price: "50000",
           desc:
@@ -31,8 +29,7 @@ export default class ManageProduct extends Component {
             "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
         },
         {
-          id: 3,
-          no: "3",
+          id: 2,
           name: "Kain Wol",
           price: "80000",
           desc:
@@ -49,7 +46,17 @@ export default class ManageProduct extends Component {
   }
 
   openAddModal() {
-    this.setState({ open: true, item: {} });
+    let id = this.state.products.length;
+    this.setState({
+      open: true,
+      item: {
+        id: id,
+        name: "",
+        price: "",
+        desc: "",
+        image: ""
+      }
+    });
   }
 
   closeModal() {
@@ -60,52 +67,71 @@ export default class ManageProduct extends Component {
     this.setState({ open: true, item: product });
   }
 
+  handleSubmit(newItem) {
+    var indexProduct = this.state.products.findIndex(function(item) {
+      return item.id === newItem.id;
+    });
+    const newArrProducts = this.state.products.slice();
+    if (indexProduct !== -1) {
+      newArrProducts[indexProduct] = newItem;
+    } else {
+      newArrProducts.push(newItem);
+    }
+    this.setState({
+      products: newArrProducts
+    });
+    this.closeModal();
+  }
+
   render() {
     return (
       <Wrapper>
         <Title>Manage Product</Title>
         <AddButton onClick={this.openAddModal}>Add New Product</AddButton>
-        <Table>
-          <thead>
-            <tr>
-              <HeadCell>No</HeadCell>
-              <HeadCell>Product Name</HeadCell>
-              <HeadCell>Product Price</HeadCell>
-              <HeadCell>Product Desc</HeadCell>
-              <HeadCell>Product Image</HeadCell>
-              <HeadCell>Manage Product</HeadCell>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.data.map(product => {
-              return (
-                <tr key={product.id}>
-                  <BodyCell>{product.no}</BodyCell>
-                  <BodyCell>{product.name}</BodyCell>
-                  <BodyCell>{product.price}</BodyCell>
-                  <DescColumn>{product.desc}</DescColumn>
-                  <BodyCell>
-                    <ProductImg src={product.image} />
-                  </BodyCell>
-                  <BodyCell>
-                    <IconImg
-                      onClick={() => {
-                        this.openEditModal(product);
-                      }}
-                      src={EditIcon}
-                    />
-                    <IconImg src={DeleteIcon} />
-                  </BodyCell>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+        <TableWrapper>
+          <Table>
+            <thead>
+              <tr>
+                <HeadCell>No</HeadCell>
+                <HeadCell>Product Name</HeadCell>
+                <HeadCell>Product Price</HeadCell>
+                <HeadCell>Product Desc</HeadCell>
+                <HeadCell>Product Image</HeadCell>
+                <HeadCell>Manage Product</HeadCell>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.products.map((product, index) => {
+                return (
+                  <tr key={product.id}>
+                    <BodyCell>{index + 1}</BodyCell>
+                    <BodyCell>{product.name}</BodyCell>
+                    <BodyCell>{product.price}</BodyCell>
+                    <DescColumn>{product.desc}</DescColumn>
+                    <BodyCell>
+                      <ProductImg src={product.image} />
+                    </BodyCell>
+                    <BodyCell>
+                      <IconImg
+                        onClick={() => {
+                          this.openEditModal(product);
+                        }}
+                        src={EditIcon}
+                      />
+                      <IconImg src={DeleteIcon} />
+                    </BodyCell>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </TableWrapper>
         {this.state.open ? (
           <AddProduct
             open={this.state.open}
             item={this.state.item}
             onClose={this.closeModal}
+            onSubmit={newItem => this.handleSubmit(newItem)}
           />
         ) : (
           ""
@@ -138,6 +164,11 @@ const AddButton = styled.button`
   &:hover {
     background: #888888;
   }
+`;
+
+const TableWrapper = styled.div`
+  max-height: 658px;
+  overflow-y: auto;
 `;
 const Table = styled.table`
   margin: 20px auto;

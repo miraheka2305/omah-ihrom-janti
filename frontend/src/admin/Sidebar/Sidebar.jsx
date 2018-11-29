@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import { NavLink } from "react-router-dom";
 export default class Sidebar extends Component {
   render() {
     return (
       <Wrapper>
         <TitleWrapper>Omah Ihrom Janti</TitleWrapper>
-        <BarWrapper>Manage Products</BarWrapper>
-        <BarWrapper>Manage Profile</BarWrapper>
+        <BarWrapper>
+          <StyledLink exact to="/">
+            Manage Products
+          </StyledLink>
+        </BarWrapper>
+        <BarWrapper>
+          <StyledLink to="/profile">Manage Profile</StyledLink>
+        </BarWrapper>
         <SignOutWrapper>Sign Out</SignOutWrapper>
       </Wrapper>
     );
@@ -28,6 +34,7 @@ const TitleWrapper = styled.div`
   line-height: 80px;
   padding: 0 15px;
 `;
+
 const BarWrapper = styled.div`
   height: 60px;
   border-bottom: 1px solid #ccc !important;
@@ -35,9 +42,20 @@ const BarWrapper = styled.div`
   font-weight: 500;
   cursor: pointer;
   line-height: 60px;
-  padding: 0 15px;
   &:hover {
-    background-color: #dcdcdc;
+    text-decoration: underline;
+    text-style: bold;
+  }
+`;
+
+const activeClassName = "active";
+const StyledLink = styled(NavLink).attrs({ activeClassName: activeClassName })`
+  text-decoration: none;
+  color: black;
+  padding: 18px 142px 18px 18px;
+  &.${activeClassName} {
+    text-decoration: underline;
+    text-style: bold;
   }
 `;
 
@@ -45,6 +63,7 @@ const SignOutWrapper = styled(BarWrapper)`
   position: absolute;
   bottom: 0;
   width: 270px;
+  padding: 0 15px;
   border-bottom: none;
   border-top: 1px solid #ccc !important;
 `;
