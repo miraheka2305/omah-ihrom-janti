@@ -1,20 +1,30 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import auth from "../../auth";
 export default class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+  handleLogout() {
+    auth.logout(() => {
+      this.props.history.push("/login");
+    });
+  }
   render() {
     return (
       <Wrapper>
         <TitleWrapper>Omah Ihrom Janti</TitleWrapper>
         <BarWrapper>
-          <StyledLink exact to="/">
+          <StyledLink exact to="/admin-home">
             Manage Products
           </StyledLink>
         </BarWrapper>
         <BarWrapper>
           <StyledLink to="/profile">Manage Profile</StyledLink>
         </BarWrapper>
-        <SignOutWrapper>Sign Out</SignOutWrapper>
+        <LogoutWrapper onClick={this.handleLogout}>Logout</LogoutWrapper>
       </Wrapper>
     );
   }
@@ -59,7 +69,7 @@ const StyledLink = styled(NavLink).attrs({ activeClassName: activeClassName })`
   }
 `;
 
-const SignOutWrapper = styled(BarWrapper)`
+const LogoutWrapper = styled(BarWrapper)`
   position: absolute;
   bottom: 0;
   width: 270px;
