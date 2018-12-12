@@ -3,12 +3,14 @@ import styled from "styled-components";
 import EditIcon from "../../assets/edit.svg";
 import DeleteIcon from "../../assets/waste-bin.svg";
 import AddProduct from "../AddProduct/AddProduct";
+import ModalConfirmation from "../../components/ModalConfirmation/ModalConfirmation";
 
 export default class ManageProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      openConfirm: false,
       products: [
         {
           id: 0,
@@ -42,7 +44,10 @@ export default class ManageProduct extends Component {
     };
     this.openAddModal = this.openAddModal.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
+    this.openConfirmModal = this.openConfirmModal.bind(this);
+    this.onDeleteProduct = this.onDeleteProduct.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.closeConfirmModal = this.closeConfirmModal.bind(this);
   }
 
   openAddModal() {
@@ -59,12 +64,36 @@ export default class ManageProduct extends Component {
     });
   }
 
+  openEditModal(product) {
+    this.setState({ open: true, item: product });
+  }
+
+  openConfirmModal() {
+    this.setState({
+      openConfirm: true
+    });
+  }
+
   closeModal() {
     this.setState({ open: false });
   }
 
-  openEditModal(product) {
-    this.setState({ open: true, item: product });
+  closeConfirmModal() {
+    this.setState({
+      openConfirm: false
+    });
+  }
+
+  onDeleteProduct(product) {
+    let products = [...this.state.products];
+    let idxProduct = products.indexOf(product);
+    if (idxProduct !== -1) {
+      products.splice(idxProduct, 1);
+      this.setState({
+        products: products,
+        openConfirm: false
+      });
+    }
   }
 
   handleSubmit(newItem) {
@@ -113,12 +142,25 @@ export default class ManageProduct extends Component {
                     </BodyCell>
                     <BodyCell>
                       <IconImg
+                        src={EditIcon}
                         onClick={() => {
                           this.openEditModal(product);
                         }}
-                        src={EditIcon}
                       />
-                      <IconImg src={DeleteIcon} />
+                      <IconImg
+                        src={DeleteIcon}
+                        onClick={this.openConfirmModal}
+                      />
+                      {this.state.openConfirm ? (
+                        <ModalConfirmation
+                          open={this.state.openConfirm}
+                          onClose={this.closeConfirmModal}
+                          product={product}
+                          onDelete={product => this.onDeleteProduct(product)}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </BodyCell>
                   </tr>
                 );
