@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 	"omahihrom/database"
-	"omahihrom/helper"
 	"omahihrom/model"
 	"omahihrom/respond"
 	"strconv"
 	"time"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 )
@@ -22,10 +22,16 @@ func GetUserLogin(w http.ResponseWriter, r *http.Request) {
 func ReadUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	u := model.User{Id: id}
 	err = u.GetUser(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	respond.RespondWithJSON(w, http.StatusOK, u)
 }
 
@@ -33,9 +39,15 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	var user model.User
 	decoder := json.NewDecoder(req.Body)
 	err := decoder.Decode(&user)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	err = user.Login(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	claims := model.Claims{
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    "Omah Ihrom Janti Claims",
@@ -62,11 +74,17 @@ func ReadUsers(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	u := model.User{Id: id}
 	err = u.DeleteUser(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	respond.RespondWithJSON(w, http.StatusOK, "User deleted")
 }
 
@@ -74,16 +92,25 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	var u model.User
 	decoder := json.NewDecoder(r.Body)
 	err = decoder.Decode(&u)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	u.Id = id
 	err = u.UpdateUser(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, u)
 
@@ -93,11 +120,17 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	var u model.User
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&u)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	defer r.Body.Close()
 	err = u.AddUser(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, u)
 }
@@ -106,12 +139,22 @@ func GetUserProduct(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("User Product")
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	u := model.User{Id: id}
 	err = u.GetUserProduct(database.DB)
-	helper.CheckError(w, err)
+	if err != nil {
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, u)
 
+}
+
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	respond.RespondWithJSON(w, http.StatusOK, "Hello World")
 }

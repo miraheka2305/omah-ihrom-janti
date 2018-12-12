@@ -9,5 +9,5 @@ import (
 
 func main() {
 
-	log.Fatal(http.ListenAndServe(":8000", route.Router))
+	log.Fatal(http.ListenAndServe(":8000", route.BaseRouter))
 }
