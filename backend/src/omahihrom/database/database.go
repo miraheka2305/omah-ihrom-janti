@@ -14,6 +14,7 @@ var DB *gorm.DB
 func init() {
 	var err error
 	DB, err = gorm.Open("mysql", "root:@/golang_new")
+	// DB, err = gorm.Open("mysql", "omahihrom:password@/omahihrom")
 	DB.DropTableIfExists(&model.Product{})
 	DB.DropTableIfExists(&model.User{})
 	DB.DropTableIfExists(&model.Image{})

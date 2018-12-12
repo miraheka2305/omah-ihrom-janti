@@ -30,7 +30,10 @@ func AddProduct(w http.ResponseWriter, req *http.Request) {
 	userId := int(userInfo["UserId"].(float64))
 	convertedPrice, err := strconv.Atoi(price)
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 
 	product := model.Product{Name: name, UserId: userId, Price: convertedPrice}
 	err = product.AddProduct(database.DB)
@@ -41,34 +44,51 @@ func AddProduct(w http.ResponseWriter, req *http.Request) {
 
 		defer file.Close()
 
-		helper.CheckError(w, err)
+		if err != nil { 		
+			respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+			return
+		}
 
 		mimeType := files[i].Header.Get("Content-Type")
 		err = helper.CheckMimeType(mimeType)
-		helper.CheckError(w, err)
+		if err != nil { 		
+			respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+			return
+		}
 
 		extension := filepath.Ext(files[i].Filename)
 		unixTimeStamp := int32(time.Now().Unix())
-		imgUrl := "/static/" + helper.ConvertToString(unixTimeStamp) + extension
+		imgUrl := "/images/" + helper.ConvertToString(unixTimeStamp) + extension
 		image := model.Image{Url: imgUrl, ProductId: product.Id}
 
 		err = image.AddImage(database.DB)
-		helper.CheckError(w, err)
-		// helper.SaveImage(imgUrl, file )
+		if err != nil { 		
+			respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+			return
+		}
 
 		imgPath := "." + imgUrl
 		out, err := os.Create(imgPath)
 
 		defer out.Close()
-		helper.CheckError(w, err)
+		if err != nil { 		
+			respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+			return
+		}
 
 		_, err = io.Copy(out, file)
 
-		helper.CheckError(w, err)
+		if err != nil { 		
+			respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+			return
+		}
 	}
 
 	err = product.GetProduct(database.DB)
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return 	
+	}
 	respond.RespondWithJSON(w, http.StatusOK, product)
 
 }
@@ -77,12 +97,18 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 
 	p := model.Product{Id: id}
 	err = p.DeleteProduct(database.DB)
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return 	
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, p)
 
@@ -93,13 +119,19 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 	p := model.Product{Id: id}
 	json.NewDecoder(r.Body).Decode(&p)
 	p.UserId = int(userInfo["UserId"].(float64))
 
 	err = p.UpdateProduct(database.DB)
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, p)
 }
@@ -107,7 +139,10 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 func GetAllProduct(w http.ResponseWriter, r *http.Request) {
 	products, err := model.GetAllProduct(database.DB)
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, products)
 }
@@ -116,12 +151,18 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return
+	}
 
 	p := model.Product{Id: id}
 	err = p.GetProduct(database.DB)
 
-	helper.CheckError(w, err)
+	if err != nil { 		
+		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+		return 
+	}
 
 	respond.RespondWithJSON(w, http.StatusOK, p)
 }
