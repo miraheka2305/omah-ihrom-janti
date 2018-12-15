@@ -2,17 +2,18 @@ package model
 
 import (
 	"fmt"
+
 	"github.com/jinzhu/gorm"
 )
 
 type Product struct {
-	Id     int    `gorm:"AUTO_INCREMENT"`
-	Name   string `gorm:"size:50" form:"name" binding:"required"`
-	Price  int    `form:"price" binding:"required"`
-	UserId int
-	Images []Image `gorm:"foreignkey:ProductId`
+	Id          int    `gorm:"AUTO_INCREMENT"`
+	Name        string `gorm:"size:50" form:"name" binding:"required"`
+	Price       int    `form:"price" binding:"required"`
+	UserId      int
+	Description string
+	Images      []Image `gorm:"foreignkey:ProductId`
 }
-
 
 func (p *Product) AddProduct(db *gorm.DB) error {
 	err := db.Create(&p).Error
@@ -40,7 +41,16 @@ func GetAllProduct(db *gorm.DB) ([]Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	return products, nil
+
+	var detailProducts []Product
+	for _, prod := range products {
+		var product Product
+		db.Find(&prod).Related(&prod.Images) //SELECT * FROM merchants JOIN products ON merchants.id = products.merchant_id WHERE merchant_id = merch.id
+		product = prod
+		detailProducts = append(detailProducts, product)
+	}
+
+	return detailProducts, nil
 }
 
 func (p *Product) GetProduct(db *gorm.DB) error {

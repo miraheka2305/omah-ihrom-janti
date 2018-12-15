@@ -16,7 +16,7 @@ func init() {
 	BaseRouter = mux.NewRouter()
 
 	Router := BaseRouter.PathPrefix("/api").Subrouter()
-	Router.Handle("/image/{rest}", http.StripPrefix("/api/image/", http.FileServer(http.Dir("images/"))))
+	Router.Handle("/image/{rest}", http.StripPrefix("/api/image/", http.FileServer(http.Dir("image/"))))
 	Router.HandleFunc("/user/product/{id:[0-9]+}", middleware.ValidateMiddleware(controller.GetUserProduct)).Methods("GET")
 	Router.HandleFunc("/user/{id:[0-9]+}", controller.UpdateUser).Methods("PUT")
 	Router.HandleFunc("/users", controller.AddUser).Methods("POST")

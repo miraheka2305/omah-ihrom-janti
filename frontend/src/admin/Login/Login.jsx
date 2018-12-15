@@ -26,18 +26,43 @@ export default class Login extends Component {
     });
   }
 
+  postData() {
+    let userData = {
+      username: this.state.user.username,
+      password: this.state.user.password
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      body : JSON.stringify(userData)
+    }
+    return fetch('http://localhost:8000/api/login', options)
+    .then(response => {
+      return response.json();
+    });
+  }
+
   handleLogin() {
-    if (this.state.user.username === this.state.username) {
-      if (this.state.user.password === this.state.password) {
+    
+    this.postData().then(response => {
+      console.log(response);
+      if(response.Status===1){
+        this.setState({ 
+          username : this.state.user.username,
+          password : this.state.user.password
+        });
+        sessionStorage.setItem("jwtToken", response.Data.token);
         auth.login(() => {
           this.props.history.push("/admin-home");
         });
-      } else {
+      }else{
         this.setState(this.baseState);
       }
-    } else {
-      this.setState(this.baseState);
-    }
+    });
   }
 
   render() {
@@ -50,27 +75,27 @@ export default class Login extends Component {
             This is admin page of Omah Ihrom Janti. Enjoy to manage your
             products
           </Greetings>
-          <FormWrapper>
-            <Label>Username</Label>
-            <Input
-              type="text"
-              name="username"
-              value={user.username}
-              onChange={e => this.handleChange(e)}
-              placeholder="type your username"
-            />
-          </FormWrapper>
-          <FormWrapper>
-            <Label style={{ marginRight: "3px" }}>Password</Label>
-            <Input
-              type="password"
-              name="password"
-              value={user.password}
-              onChange={e => this.handleChange(e)}
-              placeholder="type your password"
-            />
-          </FormWrapper>
-          <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
+            <FormWrapper>
+              <Label>Username</Label>
+              <Input
+                type="text"
+                name="username"
+                value={user.username}
+                onChange={e => this.handleChange(e)}
+                placeholder="type your username"
+              />
+            </FormWrapper>
+            <FormWrapper>
+              <Label style={{ marginRight: "3px" }}>Password</Label>
+              <Input
+                type="password"
+                name="password"
+                value={user.password}
+                onChange={e => this.handleChange(e)}
+                placeholder="type your password"
+              />
+            </FormWrapper>
+            <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
         </LoginWrapper>
       </Wrapper>
     );
