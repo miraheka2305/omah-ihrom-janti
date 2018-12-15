@@ -27,6 +27,7 @@ func AddProduct(w http.ResponseWriter, req *http.Request) {
 	files := formdata.File["file_uploads"]
 	price := req.FormValue("price")
 	name := req.Form.Get("name")
+	description := req.Form.Get("description")
 	userId := int(userInfo["UserId"].(float64))
 	convertedPrice, err := strconv.Atoi(price)
 
@@ -35,7 +36,7 @@ func AddProduct(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	product := model.Product{Name: name, UserId: userId, Price: convertedPrice}
+	product := model.Product{Name: name, UserId: userId, Price: convertedPrice, Description:description}
 	err = product.AddProduct(database.DB)
 
 	for i, _ := range files {
@@ -58,7 +59,8 @@ func AddProduct(w http.ResponseWriter, req *http.Request) {
 
 		extension := filepath.Ext(files[i].Filename)
 		unixTimeStamp := int32(time.Now().Unix())
-		imgUrl := "/images/" + helper.ConvertToString(unixTimeStamp) + extension
+		imgUrl := "/image/" + helper.ConvertToString(unixTimeStamp) + extension
+		// image := model.Image{Url: "https://www.omahihromjanti.com/api" + imgUrl, ProductId: product.Id}
 		image := model.Image{Url: imgUrl, ProductId: product.Id}
 
 		err = image.AddImage(database.DB)
@@ -134,6 +136,97 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respond.RespondWithJSON(w, http.StatusOK, p)
+
+
+	// userInfo := req.Context().Value("userInfo").(jwt.MapClaims)
+
+	// req.ParseMultipartForm(32 << 20)
+
+	// vars := mux.Vars(req)
+	// id, err := strconv.Atoi(vars["id"])
+
+	// if err != nil { 		
+	// 	respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 	return
+	// }
+	// p := model.Product{Id: id}
+	// formdata := req.MultipartForm
+	// files := formdata.File["file_uploads"]
+	// price := req.FormValue("price")
+	// name := req.Form.Get("name")
+	// description := req.Form.Get("description")
+	// userId := int(userInfo["UserId"].(float64))
+	// convertedPrice, err := strconv.Atoi(price)
+
+	// if err != nil { 		
+	// 	respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 	return
+	// }
+
+	// product := model.Product{Id:id, Name: name, UserId: userId, Price: convertedPrice, Description:description}
+
+	// err = p.UpdateProduct(database.DB)
+	// if err != nil { 		
+	// 	respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 	return
+	// }
+
+	// err = product.AddProduct(database.DB)
+
+	// for i, _ := range files {
+
+	// 	file, err := files[i].Open()
+
+	// 	defer file.Close()
+
+	// 	if err != nil { 		
+	// 		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 		return
+	// 	}
+
+	// 	mimeType := files[i].Header.Get("Content-Type")
+	// 	err = helper.CheckMimeType(mimeType)
+	// 	if err != nil { 		
+	// 		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 		return
+	// 	}
+
+	// 	extension := filepath.Ext(files[i].Filename)
+	// 	unixTimeStamp := int32(time.Now().Unix())
+	// 	imgUrl := "/image/" + helper.ConvertToString(unixTimeStamp) + extension
+	// 	// image := model.Image{Url: "https://www.omahihromjanti.com/api" + imgUrl, ProductId: product.Id}
+	// 	image := model.Image{Url: imgUrl, ProductId: product.Id}
+
+	// 	err = image.AddImage(database.DB)
+	// 	if err != nil { 		
+	// 		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 		return
+	// 	}
+
+	// 	imgPath := "." + imgUrl
+	// 	out, err := os.Create(imgPath)
+
+	// 	defer out.Close()
+	// 	if err != nil { 		
+	// 		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 		return
+	// 	}
+
+	// 	_, err = io.Copy(out, file)
+
+	// 	if err != nil { 		
+	// 		respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 		return
+	// 	}
+	// }
+
+	// err = product.GetProduct(database.DB)
+	// if err != nil { 		
+	// 	respond.RespondWithError(w, http.StatusBadRequest, err.Error()) 		
+	// 	return 	
+	// }
+	// respond.RespondWithJSON(w, http.StatusOK, product)
+
 }
 
 func GetAllProduct(w http.ResponseWriter, r *http.Request) {

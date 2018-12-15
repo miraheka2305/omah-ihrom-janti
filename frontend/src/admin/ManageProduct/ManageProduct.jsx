@@ -11,35 +11,7 @@ export default class ManageProduct extends Component {
     this.state = {
       open: false,
       openConfirm: false,
-      products: [
-        {
-          id: 0,
-          name: "Handuk Sutra",
-          price: "100000",
-          desc:
-            " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolorin reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          image:
-            "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-        },
-        {
-          id: 1,
-          name: "Kain Rayon",
-          price: "50000",
-          desc:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          image:
-            "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
-        },
-        {
-          id: 2,
-          name: "Kain Wol",
-          price: "80000",
-          desc:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          image:
-            "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-        }
-      ],
+      products: [],
       item: {}
     };
     this.openAddModal = this.openAddModal.bind(this);
@@ -50,12 +22,46 @@ export default class ManageProduct extends Component {
     this.closeConfirmModal = this.closeConfirmModal.bind(this);
   }
 
+  getProductData() {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+    }
+    return fetch('http://localhost:8000/api/products', options)
+    .then(response => {
+      return response.json();
+    });
+  }
+
+  componentDidMount() {
+    this.getProductData().then(response => {
+      let productsData = response.Data;
+      let products = [];
+      if (productsData !== null) {
+        productsData.forEach( product => {
+          products.push({
+            id : product.Id,
+            name: product.Name,
+            price : product.Price,
+            description: product.Description,
+            image : 'http://localhost:8000/api' + product.Images[0].Url
+          });
+        })
+      }
+      this.setState({ 
+        products : products
+      });
+    })
+  }
+
   openAddModal() {
-    let id = this.state.products.length;
     this.setState({
       open: true,
       item: {
-        id: id,
+        id: "",
         name: "",
         price: "",
         desc: "",
@@ -96,20 +102,73 @@ export default class ManageProduct extends Component {
     }
   }
 
-  handleSubmit(newItem) {
-    var indexProduct = this.state.products.findIndex(function(item) {
-      return item.id === newItem.id;
-    });
-    const newArrProducts = this.state.products.slice();
-    if (indexProduct !== -1) {
-      newArrProducts[indexProduct] = newItem;
-    } else {
-      newArrProducts.push(newItem);
+  postProduct(newProduct){
+
+    let formData = new FormData();
+    formData.append('file_uploads', newProduct.image);
+    formData.append('name', newProduct.name);
+    formData.append('price', newProduct.price);
+    formData.append('description', newProduct.desc);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Authorization': sessionStorage.getItem("jwtToken"), 
+        'Accept': 'application/json, text/plain, */*',
+      },
+      body: formData
     }
-    this.setState({
-      products: newArrProducts
+    return fetch('http://localhost:8000/api/products', options)
+    .then(response => {
+      return response.json();
     });
-    this.closeModal();
+  }
+
+  handleSubmit(newItem) {
+
+    const newArrProducts = this.state.products.slice();
+    if(newItem.id !== ""){
+      console.log('ga null tjuy');
+    }
+    this.postProduct(newItem).then( response => {
+      newItem.id = response.Data.Id;
+      newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
+    }).then( () => {
+      newArrProducts.push(newItem);
+    }).then( () => {
+      this.setState({
+        products: newArrProducts
+      });
+    }).then(() => {
+      this.closeModal();
+    })
+
+    // const newArrProducts = this.state.products.slice();
+    // if (indexProduct !== -1) {
+    //   newArrProducts[indexProduct] = newItem;
+    // } else {
+    //   newArrProducts.push(newItem);
+    //   console.log(newArrProducts);
+    // }
+    // this.setState({
+    //   products: newArrProducts
+    // });
+    // this.closeModal();
+
+
+
+    // // console.log(indexProduct);
+    // const newArrProducts = this.state.products.slice();
+    // if (indexProduct !== -1) {
+    //   newArrProducts[indexProduct] = newItem;
+    // } else {
+    //   newArrProducts.push(newItem);
+    //   console.log(newArrProducts);
+    // }
+    // this.setState({
+    //   products: newArrProducts
+    // });
+    // this.closeModal();
   }
 
   render() {

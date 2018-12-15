@@ -8,7 +8,7 @@ export default class AddProduct extends Component {
     this.state = {
       file: "",
       open: true,
-      item: {}
+      item: {} 
     };
     this.baseState = this.state;
     this.handleChange = this.handleChange.bind(this);
@@ -33,14 +33,9 @@ export default class AddProduct extends Component {
   handleImageChange(e) {
     e.preventDefault();
     let item = Object.assign({}, this.state.item);
-    let reader = new FileReader();
     let file = e.target.files[0];
-
-    reader.onloadend = () => {
-      item.image = reader.result;
-      this.setState({ file: file, item: item });
-    };
-    reader.readAsDataURL(file);
+    item.image = file;
+    this.setState({ item: item });
   }
 
   handleSubmit(e) {
