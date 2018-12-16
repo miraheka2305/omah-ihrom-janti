@@ -1,14 +1,21 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+<<<<<<< HEAD
 import { Formik } from "formik";
+=======
+>>>>>>> Implement UI manage profile
 
 export default class ManageProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "admin",
+<<<<<<< HEAD
       password: "password",
       repassword: "password"
+=======
+      password: "password"
+>>>>>>> Implement UI manage profile
     };
     this.baseState = this.state;
 
@@ -35,6 +42,7 @@ export default class ManageProfile extends Component {
     return (
       <Wrapper>
         <Title>Manage Profile</Title>
+<<<<<<< HEAD
         <Formik
           validate={() => {
             let errors = {};
@@ -119,6 +127,34 @@ export default class ManageProfile extends Component {
             </form>
           )}
         />
+=======
+        <Form>
+          <FormWrapper>
+            <Label>User Name</Label>
+            <Input
+              type="text"
+              name="username"
+              value={this.state.username}
+              onChange={this.handleChange}
+            />
+          </FormWrapper>
+          <FormWrapper>
+            <Label>Password</Label>
+            <Input
+              type="password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </FormWrapper>
+          <ButtonWrapper>
+            <Button type="submit" onSubmit={this.handleSubmit}>
+              Submit
+            </Button>
+            <ButtonCancel onClick={this.handleCancel}>Cancel</ButtonCancel>
+          </ButtonWrapper>
+        </Form>
+>>>>>>> Implement UI manage profile
       </Wrapper>
     );
   }
@@ -148,6 +184,7 @@ const Label = styled.div`
   display: inline-block;
   vertical-align: top;
 `;
+<<<<<<< HEAD
 const Text = styled.p`
   color: ${props => props.color || "#4d4d4d"};
   margin-top: 0;
@@ -157,6 +194,8 @@ const Text = styled.p`
 const InputWrapper = styled.div`
   display: inline-block;
 `;
+=======
+>>>>>>> Implement UI manage profile
 
 const Input = styled.input`
   font-size: 15px;
