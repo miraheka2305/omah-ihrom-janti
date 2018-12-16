@@ -97,6 +97,7 @@ export default class AddProduct extends Component {
               <Input
                 type="file"
                 onChange={e => this.handleImageChange(e)}
+
                 required={true}
               />
             </FormWrapper>
