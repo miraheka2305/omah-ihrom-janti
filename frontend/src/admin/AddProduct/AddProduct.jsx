@@ -35,6 +35,7 @@ export default class AddProduct extends Component {
 
   handleImageChange(e) {
     e.preventDefault();
+    let reader = new FileReader();
     let item = Object.assign({}, this.state.item);
     let file = e.target.files[0];
 
