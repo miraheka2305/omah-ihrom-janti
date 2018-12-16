@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import auth from "../../auth";
+import { Formik } from "formik";
 
 export default class Login extends Component {
   constructor(props) {
@@ -30,37 +31,36 @@ export default class Login extends Component {
     let userData = {
       username: this.state.user.username,
       password: this.state.user.password
-    }
+    };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
       },
-      body : JSON.stringify(userData)
-    }
-    return fetch('http://localhost:8000/api/login', options)
-    .then(response => {
+      body: JSON.stringify(userData)
+    };
+    return fetch("http://localhost:8000/api/login", options).then(response => {
       return response.json();
     });
   }
 
   handleLogin() {
-    
     this.postData().then(response => {
       console.log(response);
-      if(response.Status===1){
-        this.setState({ 
-          username : this.state.user.username,
-          password : this.state.user.password
+      if (response.Status === 1) {
+        this.setState({
+          username: this.state.user.username,
+          password: this.state.user.password
         });
         sessionStorage.setItem("jwtToken", response.Data.token);
         auth.login(() => {
           this.props.history.push("/admin-home");
         });
-      }else{
+      } else {
         this.setState(this.baseState);
+        // errors.password = "The given password is wrong";
       }
     });
   }
@@ -75,27 +75,78 @@ export default class Login extends Component {
             This is admin page of Omah Ihrom Janti. Enjoy to manage your
             products
           </Greetings>
-            <FormWrapper>
-              <Label>Username</Label>
-              <Input
-                type="text"
-                name="username"
-                value={user.username}
-                onChange={e => this.handleChange(e)}
-                placeholder="type your username"
-              />
-            </FormWrapper>
-            <FormWrapper>
-              <Label style={{ marginRight: "3px" }}>Password</Label>
-              <Input
-                type="password"
-                name="password"
-                value={user.password}
-                onChange={e => this.handleChange(e)}
-                placeholder="type your password"
-              />
-            </FormWrapper>
-            <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
+          <Formik
+            validate={() => {
+              let errors = {};
+              if (!this.state.user.username) {
+                errors.username = "Username is required";
+              }
+              if (!this.state.user.password) {
+                errors.password = "Password is required";
+              }
+              return errors;
+            }}
+            // onSubmit={() => {
+            //   let errors = {};
+            //   if (this.state.user.username === this.state.username) {
+            //     if (this.state.user.password === this.state.password) {
+            //       auth.login(() => {
+            //         this.props.history.push("/admin-home");
+            //       });
+            //     } else {
+            //       errors.password = "The given password is wrong";
+            //       // this.setState(this.baseState);
+            //     }
+            //   } else {
+            //     errors.username = "The given username is wrong";
+            //     // this.setState(this.baseState);
+            //   }
+            //   return errors;
+            // }}
+            render={({ touched, errors, handleBlur }) => (
+              <form>
+                <FormWrapper>
+                  <Label>Username</Label>
+                  <InputWrapper>
+                    <Input
+                      type="text"
+                      name="username"
+                      value={user.username}
+                      border={
+                        touched.username && errors.username && "1px solid red"
+                      }
+                      onChange={e => this.handleChange(e)}
+                      onBlur={handleBlur}
+                      placeholder="type your username"
+                    />
+                    {touched.username && errors.username && (
+                      <Text color="red">{errors.username}</Text>
+                    )}
+                  </InputWrapper>
+                </FormWrapper>
+                <FormWrapper>
+                  <Label>Password</Label>
+                  <InputWrapper>
+                    <Input
+                      type="password"
+                      name="password"
+                      value={user.password}
+                      border={
+                        touched.password && errors.password && "1px solid red"
+                      }
+                      onChange={e => this.handleChange(e)}
+                      onBlur={handleBlur}
+                      placeholder="type your password"
+                    />
+                    {touched.password && errors.password && (
+                      <Text color="red">{errors.password}</Text>
+                    )}
+                  </InputWrapper>
+                </FormWrapper>
+                <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
+              </form>
+            )}
+          />
         </LoginWrapper>
       </Wrapper>
     );
@@ -133,19 +184,33 @@ const Greetings = styled.h4`
 `;
 
 const FormWrapper = styled.div`
-  margin: 10px 15px;
+  margin: 10px 0;
 `;
 
-const Label = styled.label`
+const Label = styled.div`
   color: white;
-  font-size: 16px;
+  font-size: 18px;
+  width: 100px;
+  display: inline-block;
+  vertical-align: top;
+`;
+
+const Text = styled.p`
+  color: ${props => props.color || "#4d4d4d"};
+  margin-top: 0;
+  margin-bottom: 5px;
+`;
+
+const InputWrapper = styled.div`
+  display: inline-block;
 `;
 
 const Input = styled.input`
-  margin-left: 10px;
-  border: none;
-  font-size: 14px;
-  width: 280px;
+  font-size: 15px;
+  width: 250px;
+  padding: 5px;
+  border-radius: 5px;
+  border: ${props => props.border || "1px solid #d6d6d6"};
 `;
 
 const SubmitButton = styled.button`
