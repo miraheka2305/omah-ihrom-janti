@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Formik } from "formik";
 
 export default class ManageProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "admin",
-      password: "password"
+      password: "password",
+      repassword: "password"
     };
     this.baseState = this.state;
 
@@ -33,32 +35,90 @@ export default class ManageProfile extends Component {
     return (
       <Wrapper>
         <Title>Manage Profile</Title>
-        <Form>
-          <FormWrapper>
-            <Label>User Name</Label>
-            <Input
-              type="text"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            />
-          </FormWrapper>
-          <FormWrapper>
-            <Label>Password</Label>
-            <Input
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </FormWrapper>
-          <ButtonWrapper>
-            <Button type="submit" onSubmit={this.handleSubmit}>
-              Submit
-            </Button>
-            <ButtonCancel onClick={this.handleCancel}>Cancel</ButtonCancel>
-          </ButtonWrapper>
-        </Form>
+        <Formik
+          validate={() => {
+            let errors = {};
+            if (!this.state.username) {
+              errors.username = "Username is required";
+            }
+            if (!this.state.password) {
+              errors.password = "Password is required";
+            }
+            if (this.state.password.length < 6) {
+              errors.password = "At least 6 characters for your password";
+            }
+            if (!this.state.repassword) {
+              errors.repassword = "You must confirm your password";
+            }
+            if (this.state.password !== this.state.repassword) {
+              errors.repassword = "The password don't match";
+            }
+
+            return errors;
+          }}
+          render={({ touched, errors, handleBlur }) => (
+            <form>
+              <Form>
+                <FormWrapper>
+                  <Label>User Name</Label>
+                  <InputWrapper>
+                    <Input
+                      type="text"
+                      name="username"
+                      border={
+                        touched.username && errors.username && "1px solid red"
+                      }
+                      value={this.state.username}
+                      onChange={this.handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {touched.username && errors.username && (
+                      <Text color="red">{errors.username}</Text>
+                    )}
+                  </InputWrapper>
+                </FormWrapper>
+                <FormWrapper>
+                  <Label>Password</Label>
+                  <InputWrapper>
+                    <Input
+                      type="password"
+                      name="password"
+                      value={this.state.password}
+                      onChange={this.handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {touched.password && errors.password && (
+                      <Text color="red">{errors.password}</Text>
+                    )}
+                  </InputWrapper>
+                </FormWrapper>
+                <FormWrapper>
+                  <Label>Re-Password</Label>
+                  <InputWrapper>
+                    <Input
+                      type="password"
+                      name="repassword"
+                      value={this.state.repassword}
+                      onChange={this.handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {touched.repassword && errors.repassword && (
+                      <Text color="red">{errors.repassword}</Text>
+                    )}
+                  </InputWrapper>
+                </FormWrapper>
+                <ButtonWrapper>
+                  <Button type="submit" onSubmit={this.handleSubmit}>
+                    Submit
+                  </Button>
+                  <ButtonCancel onClick={this.handleCancel}>
+                    Cancel
+                  </ButtonCancel>
+                </ButtonWrapper>
+              </Form>
+            </form>
+          )}
+        />
       </Wrapper>
     );
   }
@@ -87,6 +147,15 @@ const Label = styled.div`
   width: 200px;
   display: inline-block;
   vertical-align: top;
+`;
+const Text = styled.p`
+  color: ${props => props.color || "#4d4d4d"};
+  margin-top: 0;
+  margin-bottom: 5px;
+`;
+
+const InputWrapper = styled.div`
+  display: inline-block;
 `;
 
 const Input = styled.input`
