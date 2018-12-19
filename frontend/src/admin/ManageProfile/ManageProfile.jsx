@@ -17,14 +17,40 @@ export default class ManageProfile extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
+  updateProfile(){
+   const options = {
+      method: 'PUT',
+      headers: {
+        'Authorization': sessionStorage.getItem("jwtToken"), 
+        'Accept': 'application/json, text/plain, */*',
+      },
+      body: JSON.stringify({
+        username : this.state.username,
+        password : this.state.password
+      })
+    }
+    return fetch('http://localhost:8000/api/users' , options)
+    .then(response => {
+      return response.json();
+    });
+  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  handleSubmit() {
-    console.log("hui submit");
+  handleSubmit(e) {
+    console.log('submit tjuy');
+    e.preventDefault();
+    this.updateProfile().then(response => {
+      console.log(response);
+      if(response.Status === 1){
+        console.log("sukses tjuy");
+      }
+    });
+    
   }
 
   handleCancel() {
@@ -108,7 +134,7 @@ export default class ManageProfile extends Component {
                   </InputWrapper>
                 </FormWrapper>
                 <ButtonWrapper>
-                  <Button type="submit" onSubmit={this.handleSubmit}>
+                  <Button type="submit" onSubmit={e => this.handleSubmit(e)}>
                     Submit
                   </Button>
                   <ButtonCancel onClick={this.handleCancel}>

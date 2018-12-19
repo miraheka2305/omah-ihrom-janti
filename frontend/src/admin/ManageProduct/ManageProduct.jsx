@@ -93,13 +93,34 @@ export default class ManageProduct extends Component {
   onDeleteProduct(product) {
     let products = [...this.state.products];
     let idxProduct = products.indexOf(product);
+    console.log(idxProduct);
     if (idxProduct !== -1) {
-      products.splice(idxProduct, 1);
-      this.setState({
-        products: products,
-        openConfirm: false
-      });
+      this.deleteProduct(product.id).then( response => {
+        console.log("response", response);
+        console.log("response status",response.Status);
+        if(response.Status === 1){
+          products.splice(idxProduct, 1);
+          this.setState({
+            products: products,
+            openConfirm: false
+          });
+        }
+      }) 
     }
+  }
+
+  deleteProduct(id){
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Authorization': sessionStorage.getItem("jwtToken"), 
+        'Accept': 'application/json, text/plain, */*',
+      },
+    }
+    return fetch('http://localhost:8000/api/products/' + id, options)
+    .then(response => {
+      return response.json();
+    });
   }
 
   postProduct(newProduct){
@@ -124,51 +145,64 @@ export default class ManageProduct extends Component {
     });
   }
 
+  updateProduct(product){
+    let formData = new FormData();
+    formData.append('file_uploads', product.image);
+    formData.append('name', product.name);
+    formData.append('price', product.price);
+    formData.append('description', product.desc);
+    console.log('http://localhost:8000/api/products/' + product.id );
+    console.log(sessionStorage.getItem("jwtToken")); 
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Authorization': sessionStorage.getItem("jwtToken"), 
+        'Accept': 'application/json, text/plain, */*',
+      },
+      body: formData
+    }
+    return fetch('http://localhost:8000/api/products/' + product.id , options)
+    .then(response => {
+      return response.json();
+    });
+  }
+
   handleSubmit(newItem) {
 
     const newArrProducts = this.state.products.slice();
     if(newItem.id !== ""){
-      console.log('ga null tjuy');
+      let indexProduct;
+      let products = [...this.state.products];
+      indexProduct = products.findIndex(x => x.id === newItem.id);
+
+      console.log(indexProduct);
+      this.updateProduct(newItem).then( response => {
+        console.log(response);
+        newItem.id = response.Data.Id;
+        newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
+      }).then( () => {
+        newArrProducts[indexProduct] = newItem;
+      }).then( () => {
+        this.setState({
+          products: newArrProducts
+        });
+      }).then(() => {
+        this.closeModal();
+      })
+    }else{
+      this.postProduct(newItem).then( response => {
+        newItem.id = response.Data.Id;
+        newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
+      }).then( () => {
+        newArrProducts.push(newItem);
+      }).then( () => {
+        this.setState({
+          products: newArrProducts
+        });
+      }).then(() => {
+        this.closeModal();
+      })
     }
-    this.postProduct(newItem).then( response => {
-      newItem.id = response.Data.Id;
-      newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
-    }).then( () => {
-      newArrProducts.push(newItem);
-    }).then( () => {
-      this.setState({
-        products: newArrProducts
-      });
-    }).then(() => {
-      this.closeModal();
-    })
-
-    // const newArrProducts = this.state.products.slice();
-    // if (indexProduct !== -1) {
-    //   newArrProducts[indexProduct] = newItem;
-    // } else {
-    //   newArrProducts.push(newItem);
-    //   console.log(newArrProducts);
-    // }
-    // this.setState({
-    //   products: newArrProducts
-    // });
-    // this.closeModal();
-
-
-
-    // // console.log(indexProduct);
-    // const newArrProducts = this.state.products.slice();
-    // if (indexProduct !== -1) {
-    //   newArrProducts[indexProduct] = newItem;
-    // } else {
-    //   newArrProducts.push(newItem);
-    //   console.log(newArrProducts);
-    // }
-    // this.setState({
-    //   products: newArrProducts
-    // });
-    // this.closeModal();
   }
 
   render() {

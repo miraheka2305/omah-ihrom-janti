@@ -5,14 +5,18 @@ import (
 	"net/http"
 	"omahihrom/route"
 
-	"github.com/gorilla/handlers"
+	"github.com/rs/cors"
+	// "github.com/gorilla/handlers"
 )
 
 func main() {
-	// headersOk := handlers.AllowedHeaders([]string{"Access-Control-Allow-Origin", "Content-Type", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With", "Access-Control-Request-Method", "Origin"})
-	headersOk := handlers.AllowedHeaders([]string{"Access-Control-Allow-Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "X-CSRF-Token", "Access-Control-Allow-Headers"})
+		c := cors.New(cors.Options{
+		AllowedHeaders: []string{"Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "X-CSRF-Token", "Access-Control-Allow-Headers", "Content-Disposition", "Depth", "User-Agent", "X-File-Size", "X-Requested-With", "If-Modified-Since", "X-File-Name", "Cache-Control", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With", "Access-Control-Request-Method", "Origin", "Accept"},
+		AllowedOrigins: []string{"*"},                                               // All origins
+		AllowedMethods: []string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"}, // Allowing only get, just an example
+	})
 
-	originsOk := handlers.AllowedOrigins([]string{"*"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
-	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(originsOk, headersOk, methodsOk)(route.BaseRouter)))
+	handler := c.Handler(route.BaseRouter)
+
+	log.Fatal(http.ListenAndServe(":8000", handler))
 }

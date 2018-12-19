@@ -46,7 +46,8 @@ export default class Login extends Component {
     });
   }
 
-  handleLogin() {
+  handleLogin(e) {
+    e.preventDefault();
     this.postData().then(response => {
       console.log(response);
       if (response.Status === 1) {
@@ -55,12 +56,12 @@ export default class Login extends Component {
           password: this.state.user.password
         });
         sessionStorage.setItem("jwtToken", response.Data.token);
+        sessionStorage.setItem("jwtToken", response.Data.token);
         auth.login(() => {
           this.props.history.push("/admin-home");
         });
       } else {
         this.setState(this.baseState);
-        // errors.password = "The given password is wrong";
       }
     });
   }
@@ -143,7 +144,7 @@ export default class Login extends Component {
                     )}
                   </InputWrapper>
                 </FormWrapper>
-                <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
+                <SubmitButton onClick={e => this.handleLogin(e)}>Login</SubmitButton>
               </form>
             )}
           />
