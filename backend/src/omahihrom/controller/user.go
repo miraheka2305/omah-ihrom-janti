@@ -89,23 +89,24 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
-		return
-	}
-
+	fmt.Println("sampe sini")
+	
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	fmt.Println("test")
 	var u model.User
+
 	decoder := json.NewDecoder(r.Body)
-	err = decoder.Decode(&u)
+	
+	err := decoder.Decode(&u)
+	fmt.Println(u)
+
 	if err != nil {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	u.Id = id
+	u.Id  = int(userInfo["UserId"].(float64))
+	fmt.Println(u)
 	err = u.UpdateUser(database.DB)
 	if err != nil {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
