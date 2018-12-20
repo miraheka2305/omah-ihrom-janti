@@ -21,20 +21,20 @@ export default class ProductItem extends Component {
   }
 
   render() {
-    const { item } = this.props;
+    const { product } = this.props;
     return (
       <Item>
         <ItemWrapper onClick={this.openModal}>
           <ItemHover>View details</ItemHover>
-          <ItemImg src={item.image} />
+          <ItemImg src={product.image} />
           <ItemDesc>
-            <ItemName>{item.name}</ItemName>
+            <ItemName>{product.name}</ItemName>
             <br />
-            <ItemPrice>{item.price}</ItemPrice>
+            <ItemPrice>{product.price}</ItemPrice>
           </ItemDesc>
         </ItemWrapper>
         <ProductDetails
-          data={item}
+          data={product}
           open={this.state.open}
           onClose={this.closeModal}
         />
