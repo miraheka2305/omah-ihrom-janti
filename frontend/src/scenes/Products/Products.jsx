@@ -3,97 +3,57 @@ import styled from "styled-components";
 import ProductItem from "../../components/ProductItem/ProductItem";
 
 export default class Products extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: []
+    };
+  }
+
+  getProductData() {
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    };
+
+    return fetch("https://omahihromjanti.com/api/products", options).then(
+      response => {
+        return response.json();
+      }
+    );
+  }
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.getProductData().then(response => {
+      console.log("response: ", response);
+      let productsData = response.Data;
+      let products = [];
+
+      if (productsData !== null) {
+        productsData.forEach(product => {
+          products.push({
+            id: product.Id,
+            name: product.Name,
+            price: product.Price,
+            description: product.Description,
+            image: "https://omahihromjanti.com/api" + product.Images[0].Url
+          });
+        });
+      }
+      this.setState({
+        products: products
+      });
+    });
   }
   render() {
-    const productItems = [
-      {
-        id: 1,
-        name: "Handuk Sutra Halus",
-        price: "Rp.100.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-      },
-      {
-        id: 2,
-        name: "Kain Rayon",
-        price: "Rp.50.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
-      },
-      {
-        id: 3,
-        name: "Kain Wol",
-        price: "Rp.80.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-      },
-      {
-        id: 4,
-        name: "Kain diamond",
-        price: "Rp.40.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
-      },
-      {
-        id: 5,
-        name: "Kain tenun ikat",
-        price: "Rp.140.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-      },
-      {
-        id: 6,
-        name: "Kain batik",
-        price: "Rp.90.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
-      },
-      {
-        id: 7,
-        name: "Kain songket",
-        price: "Rp.180.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-      },
-      {
-        id: 8,
-        name: "Kain kebaya",
-        price: "Rp.80.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "http://bahankain.com/wp-content/uploads//2014/12/pakaian-berbahan-wool.jpg"
-      },
-      {
-        id: 9,
-        name: "Kain flanel",
-        price: "Rp.60.000,00",
-        desc:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        image:
-          "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/4/_13485964.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-      }
-    ];
+    const { products } = this.state;
     return (
       <ProductsWrapper>
-        {productItems.map(item => {
-          return <ProductItem key={item.id} item={item} />;
+        {products.map(product => {
+          return <ProductItem key={product.id} product={product} />;
         })}
       </ProductsWrapper>
     );

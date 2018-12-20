@@ -12,7 +12,8 @@ export default class Login extends Component {
       user: {
         username: "",
         password: ""
-      }
+      },
+      isInvalid: false
     };
     this.baseState = this.state;
     this.handleChange = this.handleChange.bind(this);
@@ -41,9 +42,11 @@ export default class Login extends Component {
       },
       body: JSON.stringify(userData)
     };
-    return fetch("http://localhost:8000/api/login", options).then(response => {
-      return response.json();
-    });
+    return fetch("https://omahihromjanti.com/api/login", options).then(
+      response => {
+        return response.json();
+      }
+    );
   }
 
   handleLogin(e) {
@@ -53,7 +56,8 @@ export default class Login extends Component {
       if (response.Status === 1) {
         this.setState({
           username: this.state.user.username,
-          password: this.state.user.password
+          password: this.state.user.password,
+          isInvalid: false
         });
         sessionStorage.setItem("jwtToken", response.Data.token);
         sessionStorage.setItem("jwtToken", response.Data.token);
@@ -61,13 +65,13 @@ export default class Login extends Component {
           this.props.history.push("/admin-home");
         });
       } else {
-        this.setState(this.baseState);
+        this.setState({ isInvalid: true });
       }
     });
   }
 
   render() {
-    const { user } = this.state;
+    const { user, isInvalid } = this.state;
     return (
       <Wrapper>
         <LoginWrapper>
@@ -87,23 +91,6 @@ export default class Login extends Component {
               }
               return errors;
             }}
-            // onSubmit={() => {
-            //   let errors = {};
-            //   if (this.state.user.username === this.state.username) {
-            //     if (this.state.user.password === this.state.password) {
-            //       auth.login(() => {
-            //         this.props.history.push("/admin-home");
-            //       });
-            //     } else {
-            //       errors.password = "The given password is wrong";
-            //       // this.setState(this.baseState);
-            //     }
-            //   } else {
-            //     errors.username = "The given username is wrong";
-            //     // this.setState(this.baseState);
-            //   }
-            //   return errors;
-            // }}
             render={({ touched, errors, handleBlur }) => (
               <form>
                 <FormWrapper>
@@ -144,7 +131,12 @@ export default class Login extends Component {
                     )}
                   </InputWrapper>
                 </FormWrapper>
-                <SubmitButton onClick={e => this.handleLogin(e)}>Login</SubmitButton>
+                {isInvalid ? (
+                  <Text color="red">Username and password not match</Text>
+                ) : (
+                  ""
+                )}
+                <SubmitButton onClick={this.handleLogin}>Login</SubmitButton>
               </form>
             )}
           />

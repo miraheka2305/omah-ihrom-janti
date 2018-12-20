@@ -24,16 +24,17 @@ export default class ManageProduct extends Component {
 
   getProductData() {
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-    }
-    return fetch('http://localhost:8000/api/products', options)
-    .then(response => {
-      return response.json();
-    });
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    };
+    return fetch("https://omahihromjanti.com/api/products", options).then(
+      response => {
+        return response.json();
+      }
+    );
   }
 
   componentDidMount() {
@@ -41,20 +42,20 @@ export default class ManageProduct extends Component {
       let productsData = response.Data;
       let products = [];
       if (productsData !== null) {
-        productsData.forEach( product => {
+        productsData.forEach(product => {
           products.push({
-            id : product.Id,
+            id: product.Id,
             name: product.Name,
-            price : product.Price,
+            price: product.Price,
             description: product.Description,
-            image : 'http://localhost:8000/api' + product.Images[0].Url
+            image: "https://omahihromjanti.com/api" + product.Images[0].Url
           });
-        })
+        });
       }
-      this.setState({ 
-        products : products
+      this.setState({
+        products: products
       });
-    })
+    });
   }
 
   openAddModal() {
@@ -93,115 +94,124 @@ export default class ManageProduct extends Component {
   onDeleteProduct(product) {
     let products = [...this.state.products];
     let idxProduct = products.indexOf(product);
-    console.log(idxProduct);
     if (idxProduct !== -1) {
-      this.deleteProduct(product.id).then( response => {
-        console.log("response", response);
-        console.log("response status",response.Status);
-        if(response.Status === 1){
+      this.deleteProduct(product.id).then(response => {
+        if (response.Status === 1) {
           products.splice(idxProduct, 1);
           this.setState({
             products: products,
             openConfirm: false
           });
         }
-      }) 
+      });
     }
   }
 
-  deleteProduct(id){
+  deleteProduct(id) {
     const options = {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': sessionStorage.getItem("jwtToken"), 
-        'Accept': 'application/json, text/plain, */*',
-      },
-    }
-    return fetch('http://localhost:8000/api/products/' + id, options)
-    .then(response => {
-      return response.json();
-    });
+        Authorization: sessionStorage.getItem("jwtToken"),
+        Accept: "application/json, text/plain, */*"
+      }
+    };
+    return fetch("https://omahihromjanti.com/api/products/" + id, options).then(
+      response => {
+        return response.json();
+      }
+    );
   }
 
-  postProduct(newProduct){
-
+  postProduct(newProduct) {
     let formData = new FormData();
-    formData.append('file_uploads', newProduct.image);
-    formData.append('name', newProduct.name);
-    formData.append('price', newProduct.price);
-    formData.append('description', newProduct.desc);
+    formData.append("file_uploads", newProduct.image);
+    formData.append("name", newProduct.name);
+    formData.append("price", newProduct.price);
+    formData.append("description", newProduct.desc);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': sessionStorage.getItem("jwtToken"), 
-        'Accept': 'application/json, text/plain, */*',
+        Authorization: sessionStorage.getItem("jwtToken"),
+        Accept: "application/json, text/plain, */*"
       },
       body: formData
-    }
-    return fetch('http://localhost:8000/api/products', options)
-    .then(response => {
-      return response.json();
-    });
+    };
+    return fetch("https://omahihromjanti.com/api/products", options).then(
+      response => {
+        return response.json();
+      }
+    );
   }
 
-  updateProduct(product){
+  updateProduct(product) {
     let formData = new FormData();
-    formData.append('file_uploads', product.image);
-    formData.append('name', product.name);
-    formData.append('price', product.price);
-    formData.append('description', product.desc);
-    console.log('http://localhost:8000/api/products/' + product.id );
-    console.log(sessionStorage.getItem("jwtToken")); 
+    formData.append("file_uploads", product.image);
+    formData.append("name", product.name);
+    formData.append("price", product.price);
+    formData.append("description", product.desc);
+    console.log("http://localhost:8000/api/products/" + product.id);
+    console.log(sessionStorage.getItem("jwtToken"));
     const options = {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Authorization': sessionStorage.getItem("jwtToken"), 
-        'Accept': 'application/json, text/plain, */*',
+        Authorization: sessionStorage.getItem("jwtToken"),
+        Accept: "application/json, text/plain, */*"
       },
       body: formData
-    }
-    return fetch('http://localhost:8000/api/products/' + product.id , options)
-    .then(response => {
+    };
+    return fetch(
+      "https://omahihromjanti.com/api/products/" + product.id,
+      options
+    ).then(response => {
       return response.json();
     });
   }
 
   handleSubmit(newItem) {
-
     const newArrProducts = this.state.products.slice();
-    if(newItem.id !== ""){
+    if (newItem.id !== "") {
       let indexProduct;
       let products = [...this.state.products];
       indexProduct = products.findIndex(x => x.id === newItem.id);
 
       console.log(indexProduct);
-      this.updateProduct(newItem).then( response => {
-        console.log(response);
-        newItem.id = response.Data.Id;
-        newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
-      }).then( () => {
-        newArrProducts[indexProduct] = newItem;
-      }).then( () => {
-        this.setState({
-          products: newArrProducts
+      this.updateProduct(newItem)
+        .then(response => {
+          console.log(response);
+          newItem.id = response.Data.Id;
+          newItem.image =
+            "https://omahihromjanti.com/api" + response.Data.Images[0].Url;
+        })
+        .then(() => {
+          newArrProducts[indexProduct] = newItem;
+        })
+        .then(() => {
+          this.setState({
+            products: newArrProducts
+          });
+        })
+        .then(() => {
+          this.closeModal();
         });
-      }).then(() => {
-        this.closeModal();
-      })
-    }else{
-      this.postProduct(newItem).then( response => {
-        newItem.id = response.Data.Id;
-        newItem.image = 'http://localhost:8000/api' + response.Data.Images[0].Url;
-      }).then( () => {
-        newArrProducts.push(newItem);
-      }).then( () => {
-        this.setState({
-          products: newArrProducts
+    } else {
+      this.postProduct(newItem)
+        .then(response => {
+          newItem.id = response.Data.Id;
+          newItem.image =
+            "https://omahihromjanti.com/api" + response.Data.Images[0].Url;
+        })
+        .then(() => {
+          newArrProducts.push(newItem);
+        })
+        .then(() => {
+          this.setState({
+            products: newArrProducts
+          });
+        })
+        .then(() => {
+          this.closeModal();
         });
-      }).then(() => {
-        this.closeModal();
-      })
     }
   }
 

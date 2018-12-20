@@ -11,7 +11,7 @@ export default class Footer extends Component {
         <Description>
           <SubDescription>
             <Icon src={Address} />
-            Jl. Ir.H.Djuanda, Gang Wardia No.26, Bandung - Jawa Barat
+            Ngendo, RT.014/RW.07, Janti, Kabupaten Klaten, Jawa Tengah, 57474
           </SubDescription>
           <SubDescription>
             <Icon src={Phone} />

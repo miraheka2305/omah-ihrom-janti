@@ -17,22 +17,23 @@ export default class ManageProfile extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  updateProfile(){
-   const options = {
-      method: 'PUT',
+  updateProfile() {
+    const options = {
+      method: "PUT",
       headers: {
-        'Authorization': sessionStorage.getItem("jwtToken"), 
-        'Accept': 'application/json, text/plain, */*',
+        Authorization: sessionStorage.getItem("jwtToken"),
+        Accept: "application/json, text/plain, */*"
       },
       body: JSON.stringify({
-        username : this.state.username,
-        password : this.state.password
+        username: this.state.username,
+        password: this.state.password
       })
-    }
-    return fetch('http://localhost:8000/api/users' , options)
-    .then(response => {
-      return response.json();
-    });
+    };
+    return fetch("https://omahihromjanti.com/api/users", options).then(
+      response => {
+        return response.json();
+      }
+    );
   }
 
   handleChange(e) {
@@ -42,15 +43,14 @@ export default class ManageProfile extends Component {
   }
 
   handleSubmit(e) {
-    console.log('submit tjuy');
+    console.log("submit tjuy");
     e.preventDefault();
     this.updateProfile().then(response => {
       console.log(response);
-      if(response.Status === 1){
+      if (response.Status === 1) {
         console.log("sukses tjuy");
       }
     });
-    
   }
 
   handleCancel() {
