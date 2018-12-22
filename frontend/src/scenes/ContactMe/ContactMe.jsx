@@ -5,7 +5,8 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  InfoWindow
 } from "react-google-maps";
 const MapComponent = compose(
   withProps({
@@ -22,32 +23,37 @@ const MapComponent = compose(
     defaultCenter={{ lat: -7.591975, lng: 110.644447 }}
     defaultZoom={13}
   >
-    {props.isMarkerShown && (
+    <div>
       <Marker
         position={{ lat: -7.591975, lng: 110.644447 }}
         onClick={props.onMarkerClick}
+        name={"Omah Ihrom Janti"}
       />
-    )}
+      {props.isInfoShown && (
+        <InfoWindow
+          marker={props.activeMarker}
+          visible={props.isInfoShown}
+          onClose={props.onClose}
+        />
+      )}
+    </div>
   </GoogleMap>
 ));
 export default class ContactMe extends Component {
   state = {
-    isMarkerShown: false
+    isInfoShown: false,
+    activeMarker: {}
   };
 
-  componentDidMount() {
-    this.delayedMarker();
-  }
-
-  delayedMarker = () => {
-    setTimeout(() => {
-      this.setState({ isMarkerShown: true });
-    }, 3000);
+  handleMarkerClick = (marker, e) => {
+    this.setState({ isInfoShown: true, activeMarker: marker });
   };
 
-  handleMarkerClick = () => {
-    this.setState({ isMarkerShown: false });
-    this.delayedMarker();
+  onClose = () => {
+    this.setState({
+      isInfoShown: false,
+      activeMarker: null
+    });
   };
 
   render() {
@@ -55,8 +61,10 @@ export default class ContactMe extends Component {
       <ContactWrapper>
         <BodyWrapper>
           <MapComponent
-            isMarkerShown={this.state.isMarkerShown}
+            isInfoShown={this.state.isInfoShown}
             onMarkerClick={this.handleMarkerClick}
+            activeMarker={this.state.activeMarker}
+            onClose={this.onClose}
           />
         </BodyWrapper>
       </ContactWrapper>

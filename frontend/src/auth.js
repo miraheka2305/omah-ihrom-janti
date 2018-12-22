@@ -1,6 +1,7 @@
 class Auth {
   constructor() {
     this.authenticated = false;
+    this.token = sessionStorage.getItem("jwtToken");
   }
 
   login(cb) {
@@ -13,6 +14,9 @@ class Auth {
     cb();
   }
   isAuthenticated() {
+    if (this.token !== null) {
+      this.authenticated = true;
+    }
     return this.authenticated;
   }
 }
