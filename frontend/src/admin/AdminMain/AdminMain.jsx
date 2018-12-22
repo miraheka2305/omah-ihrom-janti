@@ -3,8 +3,13 @@ import styled from "styled-components";
 import { Switch, Route, withRouter } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import ManageProfile from "../ManageProfile/ManageProfile";
+<<<<<<< HEAD
 import ManageProduct from "../ManageProduct/ManageProduct";
 class AdminMain extends Component {
+=======
+// import ManageProduct from "../ManageProduct/ManageProduct";
+export default class AdminMain extends Component {
+>>>>>>> Implement UI manage profile
   render() {
     return (
       <Wrapper>
@@ -12,10 +17,14 @@ class AdminMain extends Component {
           <Sidebar />
         </SidebarWrapper>
         <ComponentWrapper>
+<<<<<<< HEAD
           <Switch>
             <Route exact path="/admin-home" component={ManageProduct} />
             <Route path="/profile" component={ManageProfile} />
           </Switch>
+=======
+          <ManageProfile />
+>>>>>>> Implement UI manage profile
         </ComponentWrapper>
       </Wrapper>
     );
