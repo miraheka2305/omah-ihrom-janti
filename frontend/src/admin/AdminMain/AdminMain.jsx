@@ -9,7 +9,7 @@ class AdminMain extends Component {
     return (
       <Wrapper>
         <SidebarWrapper>
-          <Sidebar />
+          <Sidebar data={this.props} />
         </SidebarWrapper>
         <ComponentWrapper>
           <Switch>

@@ -11,7 +11,7 @@ export default class AddProduct extends Component {
       imagePreviewURL: "",
       open: true,
       item: { id: 0, name: "", price: "", desc: "", image: "" },
-      isNewImage : false
+      isNewImage: false
     };
     this.baseState = this.state;
     this.handleChange = this.handleChange.bind(this);
@@ -43,26 +43,32 @@ export default class AddProduct extends Component {
     reader.onloadend = () => {
       item.image = reader.result;
       item.image = file;
-      this.setState({ file: file, imagePreviewURL: reader.result, item: item, isNewImage:true });
-      
+      this.setState({
+        file: file,
+        imagePreviewURL: reader.result,
+        item: item,
+        isNewImage: true
+      });
     };
     reader.readAsDataURL(file);
   }
-  
-  getImage(){
-    return fetch(this.state.imagePreviewURL)
-        .then(res => {
-          return res.blob();
-        });
+
+  getImage() {
+    return fetch(this.state.imagePreviewURL).then(res => {
+      return res.blob();
+    });
   }
 
-  convertBlobToFile(theBlob, fileName){
-      //A Blob() is almost a File() - it's just missing the two properties below which we will add
-      theBlob.lastModifiedDate = new Date();
-      theBlob.name = fileName;
-      var file = new File([theBlob], fileName, {type: theBlob.type, lastModified: Date.now()});
+  convertBlobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    var file = new File([theBlob], fileName, {
+      type: theBlob.type,
+      lastModified: Date.now()
+    });
 
-      return file;
+    return file;
   }
 
   handleSubmit(e) {
@@ -75,28 +81,21 @@ export default class AddProduct extends Component {
     ) {
       return;
     }
-    if(this.state.isNewImage === false){
+    if (this.state.isNewImage === false) {
       let item = Object.assign({}, this.state.item);
-  
+
       this.getImage().then(blob => {
-        // console.log(blob);
         let copyImagePreviewUrl = this.state.imagePreviewURL;
-        console.log(copyImagePreviewUrl);
-        let splitUrl = this.state.imagePreviewURL.split('/')
-        let fileName = splitUrl[splitUrl.length-1];
-        console.log(fileName)
+        let splitUrl = this.state.imagePreviewURL.split("/");
+        let fileName = splitUrl[splitUrl.length - 1];
         let image = this.convertBlobToFile(blob, fileName);
-        // console.log(image);
         item.image = image;
-        this.setState({item : item});
+        this.setState({ item: item });
         this.props.onSubmit(this.state.item);
-        
       });
-    }else{
-      console.log(this.state.item.image);
+    } else {
       this.props.onSubmit(this.state.item);
     }
-    
   }
 
   handleCancel() {

@@ -9,7 +9,8 @@ export default class Sidebar extends Component {
   }
   handleLogout() {
     auth.logout(() => {
-      this.props.history.push("/login");
+      sessionStorage.removeItem("jwtToken");
+      this.props.data.history.push("/login");
     });
   }
   render() {
