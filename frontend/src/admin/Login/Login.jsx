@@ -59,7 +59,6 @@ export default class Login extends Component {
           isInvalid: false
         });
         sessionStorage.setItem("jwtToken", response.Data.token);
-        sessionStorage.setItem("jwtToken", response.Data.token);
         auth.login(() => {
           this.props.history.push("/admin-home");
         });
