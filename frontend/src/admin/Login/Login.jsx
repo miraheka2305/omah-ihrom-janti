@@ -52,7 +52,6 @@ export default class Login extends Component {
   handleLogin(e) {
     e.preventDefault();
     this.postData().then(response => {
-      console.log(response);
       if (response.Status === 1) {
         this.setState({
           username: this.state.user.username,

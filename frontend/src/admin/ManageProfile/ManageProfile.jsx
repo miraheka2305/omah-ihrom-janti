@@ -6,15 +6,41 @@ export default class ManageProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "admin",
-      password: "password",
-      repassword: "password"
+      username: "",
+      password: "",
+      repassword: "",
+      isSuccess: false
     };
     this.baseState = this.state;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  getProfile() {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: sessionStorage.getItem("jwtToken"),
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    };
+    return fetch("https://omahihromjanti.com/api/userinfo?", options).then(
+      rsp => {
+        return rsp.json();
+      }
+    );
+  }
+
+  componentDidMount() {
+    this.getProfile().then(rsp => {
+      let username = rsp.Data.Username;
+      this.setState({
+        username: username
+      });
+    });
   }
 
   updateProfile() {
@@ -43,12 +69,13 @@ export default class ManageProfile extends Component {
   }
 
   handleSubmit(e) {
-    console.log("submit tjuy");
     e.preventDefault();
-    this.updateProfile().then(response => {
-      console.log(response);
-      if (response.Status === 1) {
-        console.log("sukses tjuy");
+    this.updateProfile().then(rsp => {
+      if (rsp.Status === 1) {
+        this.setState({
+          username: rsp.Data.Username,
+          isSuccess: true
+        });
       }
     });
   }
@@ -58,25 +85,26 @@ export default class ManageProfile extends Component {
   }
 
   render() {
+    const { username, password, repassword, isSuccess } = this.state;
     return (
       <Wrapper>
         <Title>Manage Profile</Title>
         <Formik
           validate={() => {
             let errors = {};
-            if (!this.state.username) {
+            if (!username) {
               errors.username = "Username is required";
             }
-            if (!this.state.password) {
+            if (!password) {
               errors.password = "Password is required";
             }
-            if (this.state.password.length < 6) {
+            if (password.length < 6) {
               errors.password = "At least 6 characters for your password";
             }
-            if (!this.state.repassword) {
+            if (!repassword) {
               errors.repassword = "You must confirm your password";
             }
-            if (this.state.password !== this.state.repassword) {
+            if (password !== repassword) {
               errors.repassword = "The password don't match";
             }
 
@@ -94,7 +122,7 @@ export default class ManageProfile extends Component {
                       border={
                         touched.username && errors.username && "1px solid red"
                       }
-                      value={this.state.username}
+                      value={username}
                       onChange={this.handleChange}
                       onBlur={handleBlur}
                     />
@@ -109,7 +137,7 @@ export default class ManageProfile extends Component {
                     <Input
                       type="password"
                       name="password"
-                      value={this.state.password}
+                      value={password}
                       onChange={this.handleChange}
                       onBlur={handleBlur}
                     />
@@ -124,7 +152,7 @@ export default class ManageProfile extends Component {
                     <Input
                       type="password"
                       name="repassword"
-                      value={this.state.repassword}
+                      value={repassword}
                       onChange={this.handleChange}
                       onBlur={handleBlur}
                     />
@@ -132,9 +160,22 @@ export default class ManageProfile extends Component {
                       <Text color="red">{errors.repassword}</Text>
                     )}
                   </InputWrapper>
+                  {isSuccess ? (
+                    <Text
+                      color="blue"
+                      style={{
+                        textAlign: "center",
+                        marginTop: "5px"
+                      }}
+                    >
+                      The profile updated.
+                    </Text>
+                  ) : (
+                    ""
+                  )}
                 </FormWrapper>
                 <ButtonWrapper>
-                  <Button type="submit" onSubmit={e => this.handleSubmit(e)}>
+                  <Button type="submit" onClick={e => this.handleSubmit(e)}>
                     Submit
                   </Button>
                   <ButtonCancel onClick={this.handleCancel}>
