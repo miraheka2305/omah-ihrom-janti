@@ -27,7 +27,7 @@ export default class ManageProfile extends Component {
         "Content-Type": "application/json"
       }
     };
-    return fetch("https://omahihromjanti.com/api/userinfo?", options).then(
+    return fetch("https://www.omahihromjanti.com/api/userinfo?", options).then(
       rsp => {
         return rsp.json();
       }
@@ -55,7 +55,7 @@ export default class ManageProfile extends Component {
         password: this.state.password
       })
     };
-    return fetch("https://omahihromjanti.com/api/users", options).then(
+    return fetch("https://www.omahihromjanti.com/api/users", options).then(
       response => {
         return response.json();
       }

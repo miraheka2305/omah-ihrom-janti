@@ -48,10 +48,11 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
+	expireToken := time.Now().Add(time.Hour * 12).Unix()
 	claims := model.Claims{
 		StandardClaims: jwt.StandardClaims{
-			Issuer:    "Omah Ihrom Janti Claims",
-			ExpiresAt: time.Now().Add(time.Duration(3) * time.Hour).Unix(),
+			Issuer:    "Omah-Ihrom-Janti-Claims",
+			ExpiresAt: expireToken,
 		},
 		Username: user.Username,
 		UserId:   user.Id,
@@ -89,14 +90,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("sampe sini")
-	
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
-	fmt.Println("test")
 	var u model.User
-
 	decoder := json.NewDecoder(r.Body)
-	
 	err := decoder.Decode(&u)
 	fmt.Println(u)
 
@@ -104,8 +100,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	u.Id  = int(userInfo["UserId"].(float64))
+	u.Id = int(userInfo["UserId"].(float64))
 	fmt.Println(u)
 	err = u.UpdateUser(database.DB)
 	if err != nil {

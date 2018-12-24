@@ -1,16 +1,16 @@
 package model
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"log"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
 	Id       int    `gorm:"AUTO_INCREMENT"`
 	Username string `gorm:"size:50"`
-	Email    string `gorm:"size:50"`
 	Password string
 	Name     string    `gorm:"size:50"`
 	Products []Product `gorm:"foreignkey:UserId`
@@ -51,8 +51,16 @@ func GetUsers(db *gorm.DB) ([]User, error) {
 }
 
 func (u *User) UpdateUser(db *gorm.DB) error {
-	db.First(&u)
-	err := db.Save(&u).Error
+	var user User
+	user.Id = u.Id
+	err := db.First(&user).Error
+	if err != nil {
+		return err
+	}
+	newPassword := hashPassword(u.Password)
+	u.Name = user.Name
+	u.Password = string(newPassword)
+	err = db.Save(&u).Error
 	return err
 
 }

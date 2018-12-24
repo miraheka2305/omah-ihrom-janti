@@ -19,7 +19,7 @@ export default class Products extends Component {
       }
     };
 
-    return fetch("https://omahihromjanti.com/api/products", options).then(
+    return fetch("https://www.omahihromjanti.com/api/products", options).then(
       response => {
         return response.json();
       }
@@ -39,7 +39,7 @@ export default class Products extends Component {
             name: product.Name,
             price: product.Price,
             description: product.Description,
-            image: "https://omahihromjanti.com/api" + product.Images[0].Url
+            image: "https://www.omahihromjanti.com/api" + product.Images[0].Url
           });
         });
       }

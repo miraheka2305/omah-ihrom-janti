@@ -45,7 +45,7 @@ func GetAllProduct(db *gorm.DB) ([]Product, error) {
 	var detailProducts []Product
 	for _, prod := range products {
 		var product Product
-		db.Find(&prod).Related(&prod.Images) //SELECT * FROM merchants JOIN products ON merchants.id = products.merchant_id WHERE merchant_id = merch.id
+		db.Find(&prod).Related(&prod.Images)
 		product = prod
 		detailProducts = append(detailProducts, product)
 	}

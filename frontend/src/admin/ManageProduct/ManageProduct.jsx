@@ -30,7 +30,7 @@ export default class ManageProduct extends Component {
         "Content-Type": "application/json"
       }
     };
-    return fetch("https://omahihromjanti.com/api/products", options).then(
+    return fetch("https://www.omahihromjanti.com/api/products", options).then(
       response => {
         return response.json();
       }
@@ -48,7 +48,7 @@ export default class ManageProduct extends Component {
             name: product.Name,
             price: product.Price,
             description: product.Description,
-            image: "https://omahihromjanti.com/api" + product.Images[0].Url
+            image: "https://www.omahihromjanti.com/api" + product.Images[0].Url
           });
         });
       }
@@ -115,7 +115,7 @@ export default class ManageProduct extends Component {
         Accept: "application/json, text/plain, */*"
       }
     };
-    return fetch("https://omahihromjanti.com/api/products/" + id, options).then(
+    return fetch("https://www.omahihromjanti.com/api/products/" + id, options).then(
       response => {
         return response.json();
       }
@@ -137,7 +137,7 @@ export default class ManageProduct extends Component {
       },
       body: formData
     };
-    return fetch("https://omahihromjanti.com/api/products", options).then(
+    return fetch("https://www.omahihromjanti.com/api/products", options).then(
       response => {
         return response.json();
       }
@@ -150,7 +150,7 @@ export default class ManageProduct extends Component {
     formData.append("name", product.name);
     formData.append("price", product.price);
     formData.append("description", product.desc);
-    console.log("http://localhost:8000/api/products/" + product.id);
+    console.log("https://www.omahihromjanti.com/api/products/" + product.id);
     console.log(sessionStorage.getItem("jwtToken"));
     const options = {
       method: "PUT",
@@ -161,7 +161,7 @@ export default class ManageProduct extends Component {
       body: formData
     };
     return fetch(
-      "https://omahihromjanti.com/api/products/" + product.id,
+      "https://www.omahihromjanti.com/api/products/" + product.id,
       options
     ).then(response => {
       return response.json();
@@ -181,7 +181,7 @@ export default class ManageProduct extends Component {
           console.log(response);
           newItem.id = response.Data.Id;
           newItem.image =
-            "https://omahihromjanti.com/api" + response.Data.Images[0].Url;
+            "https://www.omahihromjanti.com/api" + response.Data.Images[0].Url;
         })
         .then(() => {
           newArrProducts[indexProduct] = newItem;
@@ -199,7 +199,7 @@ export default class ManageProduct extends Component {
         .then(response => {
           newItem.id = response.Data.Id;
           newItem.image =
-            "https://omahihromjanti.com/api" + response.Data.Images[0].Url;
+            "https://www.omahihromjanti.com/api" + response.Data.Images[0].Url;
         })
         .then(() => {
           newArrProducts.push(newItem);
