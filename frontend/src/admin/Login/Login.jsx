@@ -42,7 +42,7 @@ export default class Login extends Component {
       },
       body: JSON.stringify(userData)
     };
-    return fetch("https://omahihromjanti.com/api/login", options).then(
+    return fetch("https://www.omahihromjanti.com/api/login", options).then(
       response => {
         return response.json();
       }
