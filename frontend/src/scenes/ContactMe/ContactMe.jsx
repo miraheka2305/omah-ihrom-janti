@@ -1,17 +1,19 @@
+/*global google*/
 import React, { Component } from "react";
 import styled from "styled-components";
 import { compose, withProps } from "recompose";
+import InfoBox from "react-google-maps/lib/components/addons/InfoBox";
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
-  InfoWindow
+  InfoWindow,
 } from "react-google-maps";
 const MapComponent = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+      "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyA1v1FQ5PiNvFB1Cfd_ATVHKvennlM3dtw",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `500px`, width: "100%" }} />,
     mapElement: <div style={{ height: `100%` }} />
@@ -24,18 +26,23 @@ const MapComponent = compose(
     defaultZoom={13}
   >
     <div>
+      
       <Marker
         position={{ lat: -7.591975, lng: 110.644447 }}
         onClick={props.onMarkerClick}
         name={"Omah Ihrom Janti"}
       />
-      {props.isInfoShown && (
-        <InfoWindow
-          marker={props.activeMarker}
-          visible={props.isInfoShown}
-          onClose={props.onClose}
-        />
-      )}
+      {props.isInfoShown && 
+        <InfoBox 
+        defaultPosition={new google.maps.LatLng(-7.591975, 110.644447)}
+        options={{ closeBoxURL: ``, enableEventPropagation: true }}>
+          <div style={{ backgroundColor: `#89CFF0`, opacity: 0.75, padding: `12px` }}>
+            <div style={{ fontSize: `12px`, fontColor: `#08233B` }}>
+              Omah Ihrom Janti
+            </div>
+          </div>
+      </InfoBox>
+      }
     </div>
   </GoogleMap>
 ));
@@ -45,8 +52,8 @@ export default class ContactMe extends Component {
     activeMarker: {}
   };
 
-  handleMarkerClick = (marker, e) => {
-    this.setState({ isInfoShown: true, activeMarker: marker });
+  handleMarkerClick = () => {
+    this.setState({ isInfoShown: true })
   };
 
   onClose = () => {
