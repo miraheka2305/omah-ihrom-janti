@@ -15,7 +15,7 @@ export default class Footer extends Component {
           </SubDescription>
           <SubDescription>
             <Icon src={Phone} />
-            +62 8122 4263 312
+            +62 812-2100-204
           </SubDescription>
         </Description>
         <CopyRight>&copy; 2018 by A&amp;M Project</CopyRight>
